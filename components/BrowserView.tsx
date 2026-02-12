@@ -127,40 +127,41 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
         />
       )}
 
-      {/* Browser Nav Bar */}
-      <div className={`relative z-20 p-3 flex items-center gap-4 border-b transition-all ${headerBg} ${headerBorder}`}>
-        <div className="flex gap-2">
+      {/* Browser Nav Bar - Responsive Update */}
+      <div className={`relative z-20 p-2 sm:p-3 flex items-center gap-2 sm:gap-4 border-b transition-all ${headerBg} ${headerBorder}`}>
+        {/* Window Controls - Hidden on Mobile */}
+        <div className="hidden sm:flex gap-2">
           <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
           <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
           <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
         </div>
         
-        <div className="flex items-center gap-3">
-          <button className={`${textSecondary} hover:text-pink-500 transition`} onClick={() => setCurrentContent(null)}>
+        <div className="flex items-center gap-1 sm:gap-3 flex-shrink-0">
+          <button className={`${textSecondary} hover:text-pink-500 transition p-1`} onClick={() => setCurrentContent(null)}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
           </button>
-          <div className="flex items-center gap-1">
+          <div className="hidden sm:flex items-center gap-1">
             <button className={`${textSecondary} p-1 hover:bg-slate-100 rounded`}><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg></button>
             <button className={`${textSecondary} p-1 hover:bg-slate-100 rounded`}><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg></button>
           </div>
         </div>
 
-        <div className="flex-1 max-w-2xl mx-auto flex items-center gap-2">
-          <div className={`flex-1 flex items-center gap-3 px-4 py-1.5 rounded-full border-2 transition-all duration-500 ${getSophisticationColor(currentAssessment?.sophistication)} ${isDarkMode ? 'bg-[#2a2a2a] border-[#444]' : 'bg-[#f1f3f4] border-transparent focus-within:bg-white focus-within:shadow-md focus-within:border-slate-300'}`}>
-             <svg className="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
+        <div className="flex-1 max-w-2xl mx-auto flex items-center gap-2 min-w-0">
+          <div className={`flex-1 flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 rounded-full border-2 transition-all duration-500 ${getSophisticationColor(currentAssessment?.sophistication)} ${isDarkMode ? 'bg-[#2a2a2a] border-[#444]' : 'bg-[#f1f3f4] border-transparent focus-within:bg-white focus-within:shadow-md focus-within:border-slate-300'}`}>
+             <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
              <input 
                 type="text" 
                 value={url} 
                 onChange={(e) => setUrl(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleNavigation(url, 'visit')}
-                className={`bg-transparent border-none focus:ring-0 text-sm w-full font-medium ${isDarkMode ? 'text-white' : 'text-slate-800'}`}
+                className={`bg-transparent border-none focus:ring-0 text-xs sm:text-sm w-full font-medium truncate ${isDarkMode ? 'text-white' : 'text-slate-800'}`}
              />
           </div>
         </div>
 
         <button 
           onClick={cycleTheme}
-          className={`p-2 rounded-lg border border-transparent transition-all hover:bg-slate-100 ${textPrimary}`}
+          className={`p-2 rounded-lg border border-transparent transition-all hover:bg-slate-100 flex-shrink-0 ${textPrimary}`}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
         </button>
