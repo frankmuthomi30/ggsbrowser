@@ -76,7 +76,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({
               <p className="text-2xl font-black tracking-tight text-slate-900 leading-tight">
                 {latestActivity 
                   ? `Last Scan: "${latestActivity.content}"` 
-                  : 'Gatura AI is Monitoring Intent'}
+                  : 'Gatura Smart System is Active'}
               </p>
            </div>
         </div>
