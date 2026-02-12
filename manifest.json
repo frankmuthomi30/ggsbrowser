@@ -1,0 +1,17 @@
+
+{
+  "name": "Gatura Girls Safe Browse",
+  "short_name": "Gatura",
+  "description": "AI-Powered Secure Browser for Teenagers",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#db2777",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/fluency/512/shield.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
