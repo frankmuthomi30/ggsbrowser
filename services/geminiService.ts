@@ -2,14 +2,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { RiskAssessment, RiskLevel } from "../types";
 
-// Safety check for API key
-const API_KEY = process.env.API_KEY || 'dummy_key';
-let ai: GoogleGenAI;
-try {
-  ai = new GoogleGenAI({ apiKey: API_KEY });
-} catch (error) {
-  console.warn("Failed to initialize Gemini AI client:", error);
-}
+// Safety check for API keys
+// Supports Primary and Backup keys for redundancy
+const KEY_PRIMARY = process.env.API_KEY_PRIMARY || 'dummy_primary';
+const KEY_BACKUP = process.env.API_KEY_BACKUP || '';
+
+const createClient = (key: string) => new GoogleGenAI({ apiKey: key });
 
 const SYSTEM_INSTRUCTION = `
 You are the "Gatura Girls Protector," an AI specialized in girl-centered internet safety and monitoring.
@@ -59,8 +57,9 @@ export const analyzeContent = async (input: string): Promise<RiskAssessment> => 
   const fallback = localFallbackCheck(input);
   if (fallback) return fallback;
   
-  try {
-    const response = await ai.models.generateContent({
+  const generate = async (apiKey: string) => {
+    const ai = createClient(apiKey);
+    return await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: `Evaluate for Gatura Girls safety: "${input}"`,
       config: {
@@ -80,6 +79,20 @@ export const analyzeContent = async (input: string): Promise<RiskAssessment> => 
         }
       }
     });
+  };
+
+  try {
+    // Attempt 1: Primary Key
+    let response;
+    try {
+       response = await generate(KEY_PRIMARY);
+    } catch (primaryError) {
+       console.warn("Primary AI Key failed. Attempting backup...", primaryError);
+       if (!KEY_BACKUP) throw primaryError; // No backup? Fail to outer catch.
+       
+       // Attempt 2: Backup Key
+       response = await generate(KEY_BACKUP);
+    }
 
     const result = JSON.parse(response.text);
     return {
@@ -88,7 +101,7 @@ export const analyzeContent = async (input: string): Promise<RiskAssessment> => 
       reason: result.reason
     };
   } catch (error) {
-    console.warn("AI Analysis failed, using local heuristics:", error);
+    console.warn("AI Analysis failed (both keys), using local heuristics:", error);
     return {
       isSafe: true, 
       riskLevel: RiskLevel.LOW,
