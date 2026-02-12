@@ -25,20 +25,43 @@ Rules:
 
 const localFallbackCheck = (input: string): RiskAssessment | null => {
   const forbidden = [
-    // Adult / Explicit
-    'porn', 'sex', 'xxx', 'naked', 'nudity', 'nsfw', 'adult', 'escort', 'hookup', 'onlyfans', 'sexy', 'brazzers', 'xhamster',
-    // Drugs / Substances
-    'drugs', 'meth', 'cocaine', 'heroin', 'fentanyl', 'weed', 'cannabis', 'ecstasy', 'pills', 'vape', 'smoke',
-    // Violence / Harm
-    'kill', 'suicide', 'death', 'murder', 'blood', 'gore', 'deadly', 'cutting', 'self-harm', 'die',
-    // Weapons
-    'gun', 'rifle', 'pistol', 'bomb', 'weapon', 'assault', 'violence', 'shooting', 'ammunition',
-    // Gambling
-    'gambling', 'casino', 'betting', 'poker', 'slots', 'jackpot', 'lottery',
-    // Malicious
-    'hack', 'exploit', 'malware', 'phishing', 'darkweb', 'tor',
-    // Hate / Extremism
-    'hate', 'slur', 'racist', 'extremist', 'terrorist', 'nazi', 'hitler'
+    // --- ADULT & EXPLICIT CONTENT ---
+    'porn', 'sex', 'xxx', 'naked', 'nudity', 'nsfw', 'adult', 'escort', 'hookup', 'onlyfans', 'sexy', 
+    'brazzers', 'xhamster', 'pornhub', ' hentai', 'erotic', 'incest', 'masturbat', 'orgasm', 'penis', 
+    'vagina', 'dick', 'cock', 'pussy', 'boobs', 'tits', 'anal', 'oral', 'bdsm', 'fetish', 'kink', 
+    'camgirl', 'strip', 'nude', 'seduce', 'fuck', 'shit', 'bitch', 'whore', 'slut', 'milf', 'dilf', 
+    'chaturbate', 'omegle', 'redtube', 'youporn', 'xvideos', 'rule34',
+
+    // --- DRUGS & SUBSTANCES ---
+    'drugs', 'meth', 'cocaine', 'heroin', 'fentanyl', 'weed', 'cannabis', 'ecstasy', 'pills', 'vape', 
+    'smoke', 'marijuana', 'lsd', 'acid', 'shrooms', 'psilocybin', 'mdma', 'molly', 'opioid', 'narcotic', 
+    'dealer', 'stoned', 'high', 'tripping', 'syringe', 'crack', 'ketamine', 'roofies',
+
+    // --- VIOLENCE & GORE ---
+    'kill', 'suicide', 'death', 'murder', 'blood', 'gore', 'deadly', 'cutting', 'self-harm', 'die', 
+    'torture', 'execution', 'beheading', 'dismember', 'mutilat', 'stab', 'shoot', 'corpse', 'necro', 
+    'snuff', 'massacre', 'genocide', 'assassinat',
+
+    // --- SELF-HARM & EATING DISORDERS ---
+    'thinspo', 'pro-ana', 'pro-mia', 'anorexia', 'bulimia', 'starve', 'purge', 'binge', 'bonespo', 
+    'cutting', 'razor', 'hang', 'overdose',
+
+    // --- WEAPONS & CRIME ---
+    'gun', 'rifle', 'pistol', 'bomb', 'weapon', 'assault', 'violence', 'shooting', 'ammunition', 
+    'knife', 'sword', 'explosive', 'grenade', 'terror', 'ar-15', 'glock', 'ammo', 'firearm', 
+    'shoplift', 'steal', 'robbery', 'illegal',
+
+    // --- GAMBLING & SCAMS ---
+    'gambling', 'casino', 'betting', 'poker', 'slots', 'jackpot', 'lottery', 'roulette', 'blackjack', 
+    'scam', 'fraud', 'bank', 'credit card',
+
+    // --- MALICIOUS & DARK WEB ---
+    'hack', 'exploit', 'malware', 'phishing', 'darkweb', 'tor', 'onion', 'proxy', 'vpn', 'bypass', 
+    'virus', 'trojan', 'spyware', 'ransomware', 'keylogger',
+
+    // --- HATE SPEECH & EXTREMISM ---
+    'hate', 'slur', 'racist', 'extremist', 'terrorist', 'nazi', 'hitler', 'supremacist', 'kkk', 
+    'bigot', 'radical', 'faggot', 'nigger', 'dyke', 'retard', 'spic', 'chink', 'kike' 
   ];
   
   const lowercaseInput = input.toLowerCase();
