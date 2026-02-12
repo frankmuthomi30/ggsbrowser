@@ -71,7 +71,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({
               <h2 className={`text-sm font-black uppercase tracking-[0.2em] mb-1 
                 ${currentRisk === RiskLevel.HIGH ? 'text-red-600' : 
                   currentRisk === RiskLevel.MEDIUM ? 'text-amber-600' : 'text-emerald-600'}`}>
-                {latestActivity?.status === 'blocked' ? 'THREAT INTERCEPTED' : `Cognitive Shield: Active`}
+                {latestActivity?.status === 'blocked' ? 'HIGH RISK STOPPED' : `Smart Shield: Active`}
               </h2>
               <p className="text-2xl font-black tracking-tight text-slate-900 leading-tight">
                 {latestActivity 
@@ -91,8 +91,8 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({
 
       {/* Navigation Tabs */}
       <div className="flex bg-white/20 backdrop-blur p-1 rounded-2xl shadow-sm border border-slate-200 w-fit mx-auto sm:mx-0">
-        <button onClick={() => setActiveTab('analytics')} className={`px-6 py-2 rounded-xl text-sm font-bold transition ${activeTab === 'analytics' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100'}`}>Cognitive Analytics</button>
-        <button onClick={() => setActiveTab('history')} className={`px-6 py-2 rounded-xl text-sm font-bold transition ${activeTab === 'history' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100'}`}>Full Register</button>
+        <button onClick={() => setActiveTab('analytics')} className={`px-6 py-2 rounded-xl text-sm font-bold transition ${activeTab === 'analytics' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100'}`}>Activity Overview</button>
+        <button onClick={() => setActiveTab('history')} className={`px-6 py-2 rounded-xl text-sm font-bold transition ${activeTab === 'history' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100'}`}>Full Log</button>
         <button onClick={() => setActiveTab('settings')} className={`px-6 py-2 rounded-xl text-sm font-bold transition ${activeTab === 'settings' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100'}`}>System Config</button>
       </div>
 
@@ -133,7 +133,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({
 
               {/* Area Chart: Intent Flow */}
               <div className={`${containerClass} p-6 rounded-3xl border shadow-sm`}>
-                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Intent Volatility</p>
+                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Activity Changes</p>
                  <div className="h-40 w-full">
                    <div style={{ width: '100%', height: '100%' }}>
                      <ResponsiveContainer width="100%" height="100%">
@@ -159,7 +159,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({
             {/* Right Column: Live Sophistication Feed */}
             <div className={`lg:col-span-2 ${containerClass} p-8 rounded-3xl border shadow-sm flex flex-col`}>
               <div className="flex justify-between items-center mb-6">
-                 <h3 className="text-xl font-black tracking-tight">Live Intent Stream</h3>
+                 <h3 className="text-xl font-black tracking-tight">Live Activity</h3>
                  <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span className="text-[10px] font-black uppercase text-slate-400">AI Active</span>
@@ -184,7 +184,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({
                               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">
                                 {new Date(activity.timestamp).toLocaleTimeString()}
                                 <span className={getSophisticationBadge(activity.sophistication)}>
-                                  {activity.sophistication || 'Standard'} Intent
+                                  {activity.sophistication === 'ACADEMIC' ? 'Advanced' : activity.sophistication === 'ELEMENTARY' ? 'Simple' : 'Standard'}
                                 </span>
                               </p>
                               <h4 className={`text-lg font-black leading-tight ${textClass}`}>"{activity.content}"</h4>
@@ -203,7 +203,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({
                   ))
                 ) : (
                   <div className="flex flex-col items-center justify-center py-20 text-slate-300">
-                    <p className="text-sm font-bold uppercase tracking-widest">Awaiting Cognitive Input</p>
+                    <p className="text-sm font-bold uppercase tracking-widest">Waiting for activity...</p>
                   </div>
                 )}
               </div>
@@ -220,8 +220,8 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({
                 <thead>
                   <tr className="border-b border-slate-100 text-[10px] font-black uppercase text-slate-400 tracking-widest">
                     <th className="py-4">Time</th>
-                    <th className="py-4">Intent</th>
-                    <th className="py-4">Sophistication</th>
+                    <th className="py-4">Topic</th>
+                    <th className="py-4">Level</th>
                     <th className="py-4">Outcome</th>
                   </tr>
                 </thead>
@@ -234,7 +234,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({
                         <span className={`text-[10px] font-black uppercase px-2 py-1 rounded ${
                            act.sophistication === 'ACADEMIC' ? 'bg-purple-100 text-purple-600' :
                            act.sophistication === 'ADOLESCENT' ? 'bg-blue-100 text-blue-600' : 'bg-emerald-100 text-emerald-600'
-                        }`}>{act.sophistication || 'N/A'}</span>
+                        }`}>{act.sophistication === 'ACADEMIC' ? 'Advanced' : act.sophistication === 'ELEMENTARY' ? 'Simple' : 'Standard'}</span>
                       </td>
                       <td className="py-4">
                         <span className={`text-[10px] font-black uppercase ${act.status === 'blocked' ? 'text-red-500' : 'text-emerald-500'}`}>

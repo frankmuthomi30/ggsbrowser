@@ -25,10 +25,10 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
   const textSecondary = isDarkMode ? 'text-slate-400' : 'text-slate-500';
 
   const loadingMessages = [
-    'Analyzing intent...',
-    'Checking cognitive complexity...',
-    'Curating safe paths...',
-    'Finalizing view...'
+    'Thinking...',
+    'Checking how complex this is...',
+    'Finding safe paths...',
+    'Almost ready...'
   ];
 
   const quickLinks = [
@@ -287,14 +287,14 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                    <div className="group border-l-4 border-pink-500 pl-4 py-2 bg-pink-50/50 dark:bg-pink-900/10 rounded-r-xl">
                       <div className="flex flex-col gap-0.5 mb-1">
                          <span className="text-xs text-pink-600 dark:text-pink-400 font-bold tracking-wider uppercase">
-                            Gatura Intelligence • {currentAssessment?.sophistication || 'Standard'} Mode
+                            Gatura Smart System • {currentAssessment?.sophistication === 'ACADEMIC' ? 'Advanced' : currentAssessment?.sophistication === 'ELEMENTARY' ? 'Simple' : 'Standard'} Level
                          </span>
                       </div>
                       <h4 className={`text-xl font-black cursor-pointer transition-colors mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                        {currentContent && currentContent.charAt(0).toUpperCase() + currentContent.slice(1)}: AI Safety Analysis
+                        {currentContent && currentContent.charAt(0).toUpperCase() + currentContent.slice(1)}: Smart Summary
                       </h4>
                       <p className={`text-sm leading-relaxed max-w-2xl font-medium ${isDarkMode ? 'text-[#bdc1c6]' : 'text-slate-600'}`}>
-                        {currentAssessment?.reason || "Content verified by Gatura Safety Protocols."}
+                        {currentAssessment?.reason || "Content checked by Gatura."}
                       </p>
                    </div>
 
