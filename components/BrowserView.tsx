@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { analyzeContent } from '../services/geminiService';
-import { Activity, RiskLevel, RiskAssessment, AppTheme } from '../types';
+import { Activity, RiskLevel, RiskAssessment, AppTheme, SophisticationLevel } from '../types';
 
 interface BrowserViewProps {
   onActivity: (activity: Activity) => void;
@@ -19,10 +19,9 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
   const [loadingMessage, setLoadingMessage] = useState('Working on it...');
 
   const loadingMessages = [
-    'Connecting...',
-    'Working on it...',
-    'Analyzing results...',
-    'Waiting, almost there...',
+    'Analyzing intent...',
+    'Checking cognitive complexity...',
+    'Curating safe paths...',
     'Finalizing view...'
   ];
 
@@ -70,6 +69,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
       type: type,
       content: input,
       riskLevel: assessment.riskLevel,
+      sophistication: assessment.sophistication,
       status: assessment.isSafe ? 'allowed' : 'blocked',
       reason: assessment.reason
     };
@@ -98,12 +98,14 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
     onUpdateTheme(themes[nextIndex]);
   };
 
-  // UI Classes
-  const isDarkMode = theme === 'glass-dark';
-  const headerBg = isDarkMode ? 'bg-[#1a1a1a]' : 'bg-white';
-  const headerBorder = isDarkMode ? 'border-[#333]' : 'border-slate-200';
-  const textPrimary = isDarkMode ? 'text-white' : 'text-slate-900';
-  const textSecondary = isDarkMode ? 'text-slate-400' : 'text-slate-500';
+  const getSophisticationColor = (level?: SophisticationLevel) => {
+    switch (level) {
+      case SophisticationLevel.ELEMENTARY: return 'border-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.5)]';
+      case SophisticationLevel.ADOLESCENT: return 'border-blue-400 shadow-[0_0_15px_rgba(96,165,250,0.5)]';
+      case SophisticationLevel.ACADEMIC: return 'border-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.5)]';
+      default: return 'border-transparent';
+    }
+  };
 
   return (
     <div className={`h-full flex flex-col overflow-hidden relative transition-all duration-300 ${isDarkMode ? 'bg-[#121212]' : 'bg-white'}`}>
@@ -138,7 +140,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
         </div>
 
         <div className="flex-1 max-w-2xl mx-auto flex items-center gap-2">
-          <div className={`flex-1 flex items-center gap-3 px-4 py-1.5 rounded-full border transition-all ${isDarkMode ? 'bg-[#2a2a2a] border-[#444]' : 'bg-[#f1f3f4] border-transparent focus-within:bg-white focus-within:shadow-md focus-within:border-slate-300'}`}>
+          <div className={`flex-1 flex items-center gap-3 px-4 py-1.5 rounded-full border-2 transition-all duration-500 ${getSophisticationColor(currentAssessment?.sophistication)} ${isDarkMode ? 'bg-[#2a2a2a] border-[#444]' : 'bg-[#f1f3f4] border-transparent focus-within:bg-white focus-within:shadow-md focus-within:border-slate-300'}`}>
              <svg className="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
              <input 
                 type="text" 
@@ -257,10 +259,30 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
 
                 {/* Main Results Column */}
                 <div className="space-y-10 max-w-3xl">
+                   
+                   {/* GATURA GUIDE: Simplified Summary for Complex/Sensitive Topics */}
+                   {currentAssessment?.guideSummary && (
+                      <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-800 shadow-xl relative overflow-hidden">
+                          <div className="absolute top-0 right-0 p-4 opacity-10">
+                            <svg className="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                          </div>
+                          <div className="flex items-center gap-2 mb-2">
+                             <span className="text-xl">✨</span>
+                             <span className="text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">Gatura Guide • Explain Like I'm...</span>
+                          </div>
+                          <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">{currentContent}: The Simple Version</h3>
+                          <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-medium relative z-10">
+                             {currentAssessment.guideSummary}
+                          </p>
+                      </div>
+                   )}
+
                    {/* Primary AI Result */}
                    <div className="group border-l-4 border-pink-500 pl-4 py-2 bg-pink-50/50 dark:bg-pink-900/10 rounded-r-xl">
                       <div className="flex flex-col gap-0.5 mb-1">
-                         <span className="text-xs text-pink-600 dark:text-pink-400 font-bold tracking-wider uppercase">Gatura Intelligence • Verified Safe</span>
+                         <span className="text-xs text-pink-600 dark:text-pink-400 font-bold tracking-wider uppercase">
+                            Gatura Intelligence • {currentAssessment?.sophistication || 'Standard'} Mode
+                         </span>
                       </div>
                       <h4 className={`text-xl font-black cursor-pointer transition-colors mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
                         {currentContent && currentContent.charAt(0).toUpperCase() + currentContent.slice(1)}: AI Safety Analysis

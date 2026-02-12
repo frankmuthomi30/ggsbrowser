@@ -162,6 +162,14 @@ const App: React.FC = () => {
     }
   };
 
+  const handleClearSession = () => {
+    // Privacy-First: Wipe session "identity" but keep logs for safety
+    // In a real implementation this would clear cookies/local storage logic related to user profiling
+    setActivities([]);
+    setViewMode('browser');
+    showNotification("Session Identity Wiped", 'info');
+  };
+
   const triggerTestAlert = () => {
     const testLog: AlertLog = {
       id: Math.random().toString(36).substr(2, 9),
@@ -287,13 +295,21 @@ const App: React.FC = () => {
 
           <div className="flex items-center gap-4">
             {viewMode === 'parent' && (
-              <button 
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition shadow-lg active:scale-95"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                Exit Admin
-              </button>
+              <div className="flex gap-2">
+                <button 
+                  onClick={handleClearSession}
+                  className="px-4 py-2 bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-300 transition shadow-sm active:scale-95"
+                >
+                  Wipe Integrity
+                </button>
+                <button 
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition shadow-lg active:scale-95"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                  Exit Admin
+                </button>
+              </div>
             )}
           </div>
         </div>

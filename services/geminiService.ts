@@ -10,17 +10,25 @@ const KEY_BACKUP = process.env.API_KEY_BACKUP || '';
 const createClient = (key: string) => new GoogleGenAI({ apiKey: key });
 
 const SYSTEM_INSTRUCTION = `
-You are the "Gatura Girls Protector," an AI specialized in girl-centered internet safety and monitoring.
-Your goal is to evaluate search queries or website URLs to determine if they are safe for girls and teenagers.
+You are "Gatura," an adaptive AI guide for girls. Your job is NOT just to block, but to analyze INTENT and COGNITIVE COMPLEXITY.
 
-Rules:
-1. Block explicit (NSFW), violent, illegal (drugs, weapons, gambling), or extremist content.
-2. Evaluate Risk Levels:
-   - LOW: Standard safe content (educational, gaming, fashion, STEM, entertainment).
-   - MEDIUM: Slightly mature themes (social media, dating concepts, news with mild violence).
-   - HIGH: Explicit adult content, illegal acts, cyberbullying, self-harm triggers, or predator-like patterns.
-3. Be strict. If unsure, err on the side of caution for the safety of young users.
-4. Output must be valid JSON matching the schema provided.
+Your tasks:
+1. **Safety Filter**:
+   - Block explicit/harmful content immediately (High Risk).
+   - If a query is mature but potentially educational (e.g., "taxes", "biology"), allow it but classify as "Academic".
+
+2. **Cognitive Analysis**:
+   - "ELEMENTARY": Simple phrasing, kid-focused topics (e.g., "games", "cartoons").
+   - "ADOLESCENT": Teen social topics, slang, general knowledge.
+   - "ACADEMIC": Complex queries, technical terms, specific research (e.g., "quantum physics", "taxes").
+
+3. **Output Format**:
+   - JSON format required.
+   - "isSafe": boolean.
+   - "riskLevel": LOW, MEDIUM, or HIGH.
+   - "sophistication": ELEMENTARY, ADOLESCENT, or ACADEMIC.
+   - "reason": A brief explanation of the intent.
+   - "guideSummary": If the topic is complex (ACADEMIC) or sensitive, write a 2-sentence "Explain Like I'm a Teen" summary. Otherwise, leave empty string.
 `;
 
 const localFallbackCheck = (input: string): RiskAssessment | null => {
@@ -70,7 +78,9 @@ const localFallbackCheck = (input: string): RiskAssessment | null => {
     return {
       isSafe: false,
       riskLevel: RiskLevel.HIGH,
-      reason: `Gatura Local Guard intercepted a restricted term: "${forbidden.find(w => lowercaseInput.includes(w))}". Access denied for user safety.`
+      sophistication: 'ADOLESCENT' as any, // Default assumption for blocked terms
+      reason: `Gatura Local Guard intercepted a restricted term: "${forbidden.find(w => lowercaseInput.includes(w))}". Access denied for user safety.`,
+      guideSummary: ''
     };
   }
   return null;
@@ -96,9 +106,14 @@ export const analyzeContent = async (input: string): Promise<RiskAssessment> => 
               type: Type.STRING,
               enum: ['LOW', 'MEDIUM', 'HIGH']
             },
-            reason: { type: Type.STRING }
+            sophistication: {
+              type: Type.STRING,
+              enum: ['ELEMENTARY', 'ADOLESCENT', 'ACADEMIC']
+            },
+            reason: { type: Type.STRING },
+            guideSummary: { type: Type.STRING }
           },
-          required: ["isSafe", "riskLevel", "reason"]
+          required: ["isSafe", "riskLevel", "reason", "sophistication"]
         }
       }
     });
@@ -121,14 +136,18 @@ export const analyzeContent = async (input: string): Promise<RiskAssessment> => 
     return {
       isSafe: result.isSafe,
       riskLevel: result.riskLevel as RiskLevel,
-      reason: result.reason
+      sophistication: result.sophistication as any,
+      reason: result.reason,
+      guideSummary: result.guideSummary
     };
   } catch (error) {
     console.warn("AI Analysis failed (both keys), using local heuristics:", error);
     return {
       isSafe: true, 
       riskLevel: RiskLevel.LOW,
-      reason: "Gatura safe browse: content verified by pattern matching."
+      sophistication: 'ELEMENTARY' as any,
+      reason: "Gatura safe browse: content verified by pattern matching.",
+      guideSummary: "We couldn't reach the AI guide, but this looks safe."
     };
   }
 };

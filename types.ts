@@ -5,6 +5,12 @@ export enum RiskLevel {
   HIGH = 'HIGH'
 }
 
+export enum SophisticationLevel {
+  ELEMENTARY = 'ELEMENTARY',
+  ADOLESCENT = 'ADOLESCENT',
+  ACADEMIC = 'ACADEMIC'
+}
+
 export type AppTheme = 'standard' | 'glass-light' | 'glass-dark';
 
 export interface Activity {
@@ -13,14 +19,17 @@ export interface Activity {
   type: 'search' | 'visit';
   content: string;
   riskLevel: RiskLevel;
-  status: 'allowed' | 'blocked';
+  sophistication: SophisticationLevel;
+  status: 'allowed' | 'blocked' | 'guided';
   reason: string;
 }
 
 export interface RiskAssessment {
   isSafe: boolean;
   riskLevel: RiskLevel;
+  sophistication: SophisticationLevel;
   reason: string;
+  guideSummary?: string;
 }
 
 export interface AlertSettings {
