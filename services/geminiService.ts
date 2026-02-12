@@ -2,7 +2,11 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { RiskAssessment, RiskLevel } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Safety check for API key
+const API_KEY = process.env.API_KEY || '';
+// Initialize conditionally or with a dummy key to prevent crash on load. 
+// If key is missing, requests will fail gracefully in the function below.
+const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 const SYSTEM_INSTRUCTION = `
 You are the "Gatura Girls Protector," an AI specialized in girl-centered internet safety and monitoring.
