@@ -14,6 +14,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [currentContent, setCurrentContent] = useState<string | null>(null);
+  const [currentAssessment, setCurrentAssessment] = useState<RiskAssessment | null>(null);
   const [errorState, setErrorState] = useState<{title: string, msg: string} | null>(null);
   const [loadingMessage, setLoadingMessage] = useState('Working on it...');
 
@@ -81,8 +82,10 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
           msg: "The content you are trying to access has been filtered by Gatura Girls for your safety."
         });
         setCurrentContent(null);
+        setCurrentAssessment(null);
       } else {
         setCurrentContent(input);
+        setCurrentAssessment(assessment);
         if (type === 'visit') setUrl(input.startsWith('http') ? input : `https://${input}`);
       }
     }, 2500);
@@ -254,16 +257,30 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
 
                 {/* Main Results Column */}
                 <div className="space-y-10 max-w-3xl">
-                   {[1, 2, 3, 4, 5, 6].map(i => (
-                      <div key={i} className="group">
+                   {/* Primary AI Result */}
+                   <div className="group border-l-4 border-pink-500 pl-4 py-2 bg-pink-50/50 dark:bg-pink-900/10 rounded-r-xl">
+                      <div className="flex flex-col gap-0.5 mb-1">
+                         <span className="text-xs text-pink-600 dark:text-pink-400 font-bold tracking-wider uppercase">Gatura Intelligence • Verified Safe</span>
+                      </div>
+                      <h4 className={`text-xl font-black cursor-pointer transition-colors mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                        {currentContent && currentContent.charAt(0).toUpperCase() + currentContent.slice(1)}: AI Safety Analysis
+                      </h4>
+                      <p className={`text-sm leading-relaxed max-w-2xl font-medium ${isDarkMode ? 'text-[#bdc1c6]' : 'text-slate-600'}`}>
+                        {currentAssessment?.reason || "Content verified by Gatura Safety Protocols."}
+                      </p>
+                   </div>
+
+                   {/* Other Standard Results */}
+                   {[1, 2, 3, 4].map(i => (
+                      <div key={i} className="group pl-4">
                          <div className="flex flex-col gap-0.5 mb-1">
                             <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate">https://secure-node-{i}.gatura.girls › info › browse</span>
                          </div>
                          <h4 className={`text-xl font-bold cursor-pointer transition-colors mb-1 ${isDarkMode ? 'text-[#8ab4f8] group-hover:underline' : 'text-[#1a0dab] group-hover:underline'}`}>
-                           Gatura Safety Check: Exploring "{currentContent}" Safely
+                           More regarding "{currentContent}"
                          </h4>
                          <p className={`text-sm leading-relaxed max-w-2xl ${isDarkMode ? 'text-[#bdc1c6]' : 'text-slate-600'}`}>
-                           This content has been verified by the Gatura Girls AI Safety protocols. It contains educational resources, community guidelines, and curated learning materials for teenagers. Click to visit this trusted destination within our secure browsing network.
+                           Explore more verified educational resources and safe content related to your search. Gatura Girls ensures all destination links remain within safe browsing parameters.
                          </p>
                       </div>
                    ))}
