@@ -18,6 +18,12 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
   const [errorState, setErrorState] = useState<{title: string, msg: string} | null>(null);
   const [loadingMessage, setLoadingMessage] = useState('Working on it...');
 
+  const isDarkMode = theme === 'glass-dark';
+  const headerBg = isDarkMode ? 'bg-black/20 backdrop-blur-md' : 'bg-white/80 backdrop-blur-md';
+  const headerBorder = isDarkMode ? 'border-white/10' : 'border-slate-200';
+  const textPrimary = isDarkMode ? 'text-white' : 'text-slate-900';
+  const textSecondary = isDarkMode ? 'text-slate-400' : 'text-slate-500';
+
   const loadingMessages = [
     'Analyzing intent...',
     'Checking cognitive complexity...',
