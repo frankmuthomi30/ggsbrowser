@@ -10,7 +10,7 @@ const KEY_BACKUP = process.env.API_KEY_BACKUP || '';
 const createClient = (key: string) => new GoogleGenAI({ apiKey: key });
 
 const SYSTEM_INSTRUCTION = `
-You are "Gatura," an adaptive AI guide for girls. Your job is NOT just to block, but to analyze INTENT, COGNITIVE COMPLEXITY, and PROVIDE USEFUL INFORMATION.
+You are "Estrell," an adaptive AI guide for girls (Created by Esther & Mitchell). Your job is NOT just to block, but to analyze INTENT, COGNITIVE COMPLEXITY, and PROVIDE USEFUL INFORMATION.
 
 Your tasks:
 1. **Safety Filter**:
@@ -97,7 +97,7 @@ const localFallbackCheck = (input: string): RiskAssessment | null => {
       isSafe: false,
       riskLevel: RiskLevel.HIGH,
       sophistication: 'ADOLESCENT' as any, // Default assumption for blocked terms
-      reason: `Gatura Local Guard intercepted a restricted term: "${matchedTerm}". Access denied for user safety.`,
+      reason: `Estrell Local Guard intercepted a restricted term: "${matchedTerm}". Access denied for user safety.`,
       guideSummary: '',
       searchResults: []
     };
@@ -113,7 +113,7 @@ export const analyzeContent = async (input: string): Promise<RiskAssessment> => 
     const ai = createClient(apiKey);
     return await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `Evaluate for Gatura Girls safety: "${input}"`,
+      contents: `Evaluate for Estrell Safe safety: "${input}"`,
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
         responseMimeType: "application/json",
@@ -179,7 +179,7 @@ export const analyzeContent = async (input: string): Promise<RiskAssessment> => 
       isSafe: true, 
       riskLevel: RiskLevel.LOW,
       sophistication: 'ELEMENTARY' as any,
-      reason: "Gatura safe browse: content verified by pattern matching.",
+      reason: "Estrell safe browse: content verified by pattern matching.",
       guideSummary: "We couldn't reach the AI guide, but this looks safe.",
       searchResults: []
     };

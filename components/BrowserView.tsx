@@ -10,8 +10,15 @@ interface BrowserViewProps {
 }
 
 const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTheme }) => {
+  const [showSplash, setShowSplash] = useState(true);
   const [url, setUrl] = useState('https://www.google.com');
   const [searchQuery, setSearchQuery] = useState('');
+  
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 4500); 
+    return () => clearTimeout(timer);
+  }, []);
+
   const [loading, setLoading] = useState(false);
   const [currentContent, setCurrentContent] = useState<string | null>(null);
   const [currentAssessment, setCurrentAssessment] = useState<RiskAssessment | null>(null);
@@ -116,6 +123,108 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
   return (
     <div className={`h-full flex flex-col overflow-hidden relative transition-all duration-300 ${isDarkMode ? 'bg-[#121212]' : 'bg-white'}`}>
       
+      {/* ----------------- SPLASH SCREEN ANIMATION ----------------- */}
+      {showSplash && (
+        <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-black text-white">
+          <div className="relative font-black text-4xl md:text-6xl tracking-widest flex flex-col items-center gap-4">
+             {/* Stage 1: The Creators */}
+             <div className="animate-[fade-out_0.5s_3s_forwards] flex gap-8">
+               <span className="text-pink-500 animate-[pulse_1s_infinite]">ESTHER</span>
+               <span className="text-slate-500">&</span>
+               <span className="text-blue-500 animate-[pulse_1s_infinite_0.5s]">MITCHELL</span>
+             </div>
+
+             {/* Stage 2: The Fusion (Letters merging) */}
+             <div className="absolute top-0 flex items-center gap-1 opacity-0 animate-[fade-in_0.5s_0.5s_forwards,merge_2s_1.5s_forwards]">
+                {/* E S T */}
+                <span className="text-pink-500">EST</span>
+                {/* R */}
+                <span className="text-purple-400">R</span>
+                {/* E L L */}
+                <span className="text-blue-500">ELL</span>
+             </div>
+
+             {/* Stage 3: The Result */}
+             <div className="absolute top-0 opacity-0 animate-[scale-in_0.5s_3.2s_forwards]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
+                   ESTRELL
+                </span>
+             </div>
+          </div>
+
+          <div className="mt-8 text-sm md:text-base font-mono text-slate-400 opacity-0 animate-[fade-in_1s_3.5s_forwards]">
+             INTELLIGENT SAFE BROWSING
+          </div>
+
+          <style>{`
+            @keyframes merge {
+              0% { letter-spacing: 0.5em; opacity: 0; filter: blur(10px); }
+              20% { opacity: 1; filter: blur(0px); }
+              80% { letter-spacing: 0em; opacity: 1; transform: scale(1); }
+              100% { opacity: 0; transform: scale(1.5); filter: blur(20px); }
+            }
+            @keyframes scale-in {
+              0% { transform: scale(0.8); opacity: 0; }
+              100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes fade-out {
+              to { opacity: 0; }
+            }
+          `}</style>
+        </div>
+      )}
+
+      {/* ----------------- SPLASH SCREEN ANIMATION ----------------- */}
+      {showSplash && (
+        <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-black text-white">
+          <div className="relative font-black text-4xl md:text-6xl tracking-widest flex flex-col items-center gap-4">
+             {/* Stage 1: The Creators */}
+             <div className="animate-[fade-out_0.5s_3s_forwards] flex gap-8">
+               <span className="text-pink-500 animate-[pulse_1s_infinite]">ESTHER</span>
+               <span className="text-slate-500">&</span>
+               <span className="text-blue-500 animate-[pulse_1s_infinite_0.5s]">MITCHELL</span>
+             </div>
+
+             {/* Stage 2: The Fusion (Letters merging) */}
+             <div className="absolute top-0 flex items-center gap-1 opacity-0 animate-[fade-in_0.5s_0.5s_forwards,merge_2s_1.5s_forwards]">
+                {/* E S T */}
+                <span className="text-pink-500">EST</span>
+                {/* R */}
+                <span className="text-purple-400">R</span>
+                {/* E L L */}
+                <span className="text-blue-500">ELL</span>
+             </div>
+
+             {/* Stage 3: The Result */}
+             <div className="absolute top-0 opacity-0 animate-[scale-in_0.5s_3.2s_forwards]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
+                   ESTRELL
+                </span>
+             </div>
+          </div>
+
+          <div className="mt-8 text-sm md:text-base font-mono text-slate-400 opacity-0 animate-[fade-in_1s_3.5s_forwards]">
+             INTELLIGENT SAFE BROWSING
+          </div>
+
+          <style>{`
+            @keyframes merge {
+              0% { letter-spacing: 0.5em; opacity: 0; filter: blur(10px); }
+              20% { opacity: 1; filter: blur(0px); }
+              80% { letter-spacing: 0em; opacity: 1; transform: scale(1); }
+              100% { opacity: 0; transform: scale(1.5); filter: blur(20px); }
+            }
+            @keyframes scale-in {
+              0% { transform: scale(0.8); opacity: 0; }
+              100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes fade-out {
+              to { opacity: 0; }
+            }
+          `}</style>
+        </div>
+      )}
+
       {/* BACKGROUND IMAGE - Only on Home Page */}
       {!currentContent && (
         <div 
@@ -194,7 +303,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
               <div className="bg-pink-600 p-4 rounded-3xl shadow-2xl mb-6 pulse-glow">
                 <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
               </div>
-              <h2 className="text-4xl font-black tracking-tighter text-white drop-shadow-lg">Gatura Girls</h2>
+              <h2 className="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-blue-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]">ESTRELL</h2>
               <p className="text-[10px] font-black text-white/70 uppercase tracking-[0.4em] mt-2 drop-shadow-md">Professional Safe Browse</p>
             </div>
             
