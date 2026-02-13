@@ -13,6 +13,13 @@ export enum SophisticationLevel {
 
 export type AppTheme = 'standard' | 'glass-light' | 'glass-dark';
 
+export interface SearchResult {
+  title: string;
+  url: string;
+  snippet: string;
+  source: string;
+}
+
 export interface Activity {
   id: string;
   timestamp: number;
@@ -30,6 +37,7 @@ export interface RiskAssessment {
   sophistication: SophisticationLevel;
   reason: string;
   guideSummary?: string;
+  searchResults: SearchResult[];
 }
 
 export interface AlertSettings {

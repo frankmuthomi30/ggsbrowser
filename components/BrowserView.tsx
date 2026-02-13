@@ -300,16 +300,24 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                    </div>
 
                    {/* Other Standard Results */}
-                   {[1, 2, 3, 4].map(i => (
-                      <div key={i} className="group pl-4">
+                   {(currentAssessment?.searchResults && currentAssessment.searchResults.length > 0 
+                      ? currentAssessment.searchResults 
+                      : [
+                          { title: `More regarding "${currentContent}"`, url: `https://secure.gatura.girls/browse`, snippet: "Explore more verified educational resources and safe content related to your search. Gatura Girls ensures all destination links remain within safe browsing parameters.", source: "Gatura Safe Search" },
+                          { title: `Educational Resources: ${currentContent}`, url: `https://edu.gatura.girls/topics`, snippet: "Find verified academic papers, articles, and learning materials suitable for your level.", source: "Gatura Education" }
+                        ]
+                   ).map((result, i) => (
+                      <div key={i} className="group pl-4 mb-8">
                          <div className="flex flex-col gap-0.5 mb-1">
-                            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate">https://secure-node-{i}.gatura.girls › info › browse</span>
+                            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate">
+                               {result.url} › {result.source}
+                            </span>
                          </div>
-                         <h4 className={`text-xl font-bold cursor-pointer transition-colors mb-1 ${isDarkMode ? 'text-[#8ab4f8] group-hover:underline' : 'text-[#1a0dab] group-hover:underline'}`}>
-                           More regarding "{currentContent}"
-                         </h4>
+                         <a href={result.url} target="_blank" rel="noopener noreferrer" className={`text-xl font-bold cursor-pointer transition-colors mb-1 block ${isDarkMode ? 'text-[#8ab4f8] hover:text-[#a8c7fa] hover:underline' : 'text-[#1a0dab] hover:text-[#1e13bd] hover:underline'}`}>
+                           {result.title}
+                         </a>
                          <p className={`text-sm leading-relaxed max-w-2xl ${isDarkMode ? 'text-[#bdc1c6]' : 'text-slate-600'}`}>
-                           Explore more verified educational resources and safe content related to your search. Gatura Girls ensures all destination links remain within safe browsing parameters.
+                           {result.snippet}
                          </p>
                       </div>
                    ))}
