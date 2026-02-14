@@ -125,7 +125,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
       
       {/* ----------------- SPLASH SCREEN ANIMATION ----------------- */}
       {showSplash && (
-        <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#000] overflow-hidden font-sans">
+        <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#000] overflow-hidden font-sans w-screen h-screen">
           
           {/* Animated Background Gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#0c0c0c] via-[#120b18] to-[#040810] animate-gradient-xy opacity-90"></div>
