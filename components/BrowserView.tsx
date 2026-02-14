@@ -324,9 +324,51 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
       {/* Browser Viewport */}
       <div className="flex-1 overflow-y-auto relative z-10 scrollbar-hide">
         {loading && (
-          <div className="absolute inset-0 z-50 bg-white/90 dark:bg-black/80 flex flex-col items-center justify-center animate-in fade-in duration-300">
-            <div className="w-16 h-16 border-4 border-pink-100 border-t-pink-500 rounded-full animate-spin mb-4"></div>
-            <p className={`text-sm font-black text-pink-500 uppercase tracking-widest`}>{loadingMessage}</p>
+          <div className={`absolute inset-0 z-50 flex flex-col items-center justify-center animate-in fade-in duration-300 backdrop-blur-md ${isDarkMode ? 'bg-black/90' : 'bg-white/95'}`}>
+            
+            {/* Ambient Background Glow */}
+            <div className="absolute inset-0 bg-gradient-to-t from-pink-500/10 to-cyan-500/10 animate-pulse"></div>
+
+            {/* Central Loader Construction */}
+            <div className="relative w-32 h-32 mb-8 flex items-center justify-center">
+               {/* 1. Outer Rotating Ring (Slow) */}
+               <div className="absolute inset-0 rounded-full border-2 border-dashed border-slate-300 dark:border-slate-700 animate-[spin_10s_linear_infinite]"></div>
+               
+               {/* 2. Middle Rotating Ring (Fast, Reverse) */}
+               <div className="absolute inset-4 rounded-full border-t-2 border-pink-500 dark:border-pink-400 animate-[spin_1.5s_linear_infinite]"></div>
+               
+               {/* 3. Inner Pulsing Core */}
+               <div className="absolute inset-10 rounded-full bg-cyan-500/20 backdrop-blur-sm animate-pulse flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+                  <svg className="w-6 h-6 text-cyan-500 animate-[bounce_2s_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+               </div>
+               
+               {/* 4. Scanning Beam Line */}
+               <div className="absolute inset-0 w-full h-full animate-[spin_2s_linear_infinite]">
+                  <div className="w-full h-1/2 bg-gradient-to-t from-transparent via-transparent to-pink-500/10 border-t border-pink-500/50 blur-[1px]"></div>
+               </div>
+            </div>
+
+            {/* Animated Text Status */}
+            <div className="text-center relative z-10 space-y-2">
+               <h3 className={`text-2xl font-black tracking-tighter uppercase animate-pulse ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                  Analyzing Content
+               </h3>
+               <div className="flex items-center gap-2 justify-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-bounce delay-75"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-bounce delay-150"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-bounce delay-300"></span>
+               </div>
+               <p className={`text-[10px] font-bold uppercase tracking-[0.3em] opacity-70 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                 {loadingMessage || 'Establishing Secure Connection...'}
+               </p>
+            </div>
+
+            {/* Simulated Progress Bar */}
+            <div className="mt-8 w-64 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden relative">
+               <div className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-pink-500 to-cyan-500 animate-[loading-bar_1.5s_ease-in-out_infinite]"></div>
+            </div>
           </div>
         )}
 
