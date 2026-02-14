@@ -18,6 +18,8 @@ export interface SearchResult {
   url: string;
   snippet: string;
   source: string;
+  keyPoints?: string[]; // New: For "vast info" (bullet points)
+  subLinks?: { title: string; url: string }[]; // New: For "clickable links expand"
 }
 
 export interface Activity {

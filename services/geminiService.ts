@@ -10,7 +10,8 @@ const KEY_BACKUP = process.env.API_KEY_BACKUP || '';
 const createClient = (key: string) => new GoogleGenAI({ apiKey: key });
 
 const SYSTEM_INSTRUCTION = `
-You are "Estrell," an adaptive AI guide for girls (Created by Esther & Mitchell). Your job is NOT just to block, but to analyze INTENT, COGNITIVE COMPLEXITY, and PROVIDE USEFUL INFORMATION.
+You are "Miest," an intelligent adaptive AI guide. Your job is to PROVIDE VAST, ENCYCLOPEDIA-LEVEL INFORMATION while maintaining safety.
+The user wants "Deep Dive" content. Do not be brief. Expand on every result.
 
 Your tasks:
 1. **Safety Filter**:
@@ -18,26 +19,23 @@ Your tasks:
    - If a query is mature but potentially educational (e.g., "taxes", "biology"), allow it but classify as "Academic".
 
 2. **Cognitive Analysis**:
-   - "ELEMENTARY": Simple phrasing, kid-focused topics (e.g., "games", "cartoons").
-   - "ADOLESCENT": Teen social topics, slang, general knowledge.
-   - "ACADEMIC": Complex queries, technical terms, specific research (e.g., "quantum physics", "taxes").
+   - "ELEMENTARY": Simple phrasing, kid-focused topics.
+   - "ADOLESCENT": Teen social topics, general knowledge.
+   - "ACADEMIC": Complex queries, technical terms.
 
-3. **Useful Search Results**:
-   - IF SAFE: Generate 4-6 detailed, realistic search results that genuinely answer the query. 
-   - Use the token limit to generate USEFUL summaries in the 'snippet'.
+3. **Useful Search Results (Vast Info Mode)**:
+   - IF SAFE: Generate 4-6 HIGHLY DETAILED results.
    - 'title': Clear, relevant title.
-   - 'url': Plausible fake or real URL (e.g., www.nationalgeographic.com/...).
-   - 'snippet': A rich, informative 2-3 sentence summary of the content found at that "link".
-   - 'source': The trusted source name (e.g., "Wikipedia", "Healthline", "NASA", "Study.com").
+   - 'url': Plausible fake or real URL.
+   - 'snippet': A LONG, detailed paragraph (4-5 sentences) summarizing the content.
+   - 'keyPoints': 3-5 bullet points extracting specific facts, dates, or concepts from this result.
+   - 'subLinks': 2-3 specific sub-pages related to this result (e.g., if result is "NASA Mars", sublinks: "Rover Photos", "Mission Timeline", "Life on Mars").
+   - 'source': The trusted source name.
 
 4. **Output Format**:
    - JSON format required.
-   - "isSafe": boolean.
-   - "riskLevel": LOW, MEDIUM, or HIGH.
-   - "sophistication": ELEMENTARY, ADOLESCENT, or ACADEMIC.
-   - "reason": A brief explanation of the intent.
-   - "guideSummary": If the topic is complex (ACADEMIC) or sensitive, write a 2-sentence "Explain Like I'm a Teen" summary. Otherwise, leave empty string.
-   - "searchResults": Array of { title, url, snippet, source }.
+   - "isSafe", "riskLevel", "sophistication", "reason", "guideSummary".
+   - "searchResults": Array of { title, url, snippet, source, keyPoints, subLinks }.
 `;
 
 const localFallbackCheck = (input: string): RiskAssessment | null => {
@@ -97,7 +95,7 @@ const localFallbackCheck = (input: string): RiskAssessment | null => {
       isSafe: false,
       riskLevel: RiskLevel.HIGH,
       sophistication: 'ADOLESCENT' as any, // Default assumption for blocked terms
-      reason: `Estrell Local Guard intercepted a restricted term: "${matchedTerm}". Access denied for user safety.`,
+      reason: `Miest Safe Guard intercepted a restricted term: "${matchedTerm}". Access denied for user safety.`,
       guideSummary: '',
       searchResults: []
     };
@@ -113,7 +111,7 @@ export const analyzeContent = async (input: string): Promise<RiskAssessment> => 
     const ai = createClient(apiKey);
     return await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `Evaluate for Estrell Safe safety: "${input}"`,
+      contents: `Evaluate for Miest Browser safety: "${input}"`,
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
         responseMimeType: "application/json",
@@ -139,9 +137,21 @@ export const analyzeContent = async (input: string): Promise<RiskAssessment> => 
                   title: { type: Type.STRING },
                   url: { type: Type.STRING },
                   snippet: { type: Type.STRING },
-                  source: { type: Type.STRING }
+                  source: { type: Type.STRING },
+                  keyPoints: { type: Type.ARRAY, items: { type: Type.STRING } },
+                  subLinks: { 
+                    type: Type.ARRAY, 
+                    items: { 
+                      type: Type.OBJECT,
+                      properties: {
+                        title: { type: Type.STRING },
+                        url: { type: Type.STRING }
+                      },
+                      required: ["title", "url"]
+                    }
+                  }
                 },
-                required: ["title", "url", "snippet", "source"]
+                required: ["title", "url", "snippet", "source", "keyPoints", "subLinks"]
               }
             }
           },
@@ -179,7 +189,7 @@ export const analyzeContent = async (input: string): Promise<RiskAssessment> => 
       isSafe: true, 
       riskLevel: RiskLevel.LOW,
       sophistication: 'ELEMENTARY' as any,
-      reason: "Estrell safe browse: content verified by pattern matching.",
+      reason: "Miest safe browse: content verified by pattern matching.",
       guideSummary: "We couldn't reach the AI guide, but this looks safe.",
       searchResults: []
     };

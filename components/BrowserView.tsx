@@ -32,9 +32,9 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
   const textSecondary = isDarkMode ? 'text-slate-400' : 'text-slate-500';
 
   const loadingMessages = [
-    'Thinking...',
-    'Checking how complex this is...',
-    'Finding safe paths...',
+    'Connecting to secure servers...',
+    'Checking content safety...',
+    'Analyzing reliability...',
     'Almost ready...'
   ];
 
@@ -50,10 +50,10 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
   ];
 
   const newsTiles = [
-    { type: 'weather', title: 'Local Weather', icon: '⛅', value: '24°C', detail: 'Sunny in Nairobi' },
-    { type: 'stocks', title: 'Markets', icon: '📈', value: 'S&P 500', detail: '+1.2% Today' },
-    { type: 'news', title: 'Top Story', icon: '📰', value: 'Mars Mission', detail: 'New rover lands' },
-    { type: 'sports', title: 'Premier League', icon: '⚽', value: 'Arsenal vs MC', detail: 'Live: 1 - 1' }
+    { type: 'weather', title: 'Local Weather', icon: '⛅', value: '24°C', detail: 'Clouds, Nairobi' },
+    { type: 'stocks', title: 'Markets', icon: '📈', value: 'NSE 20 ▲ 0.5%', detail: 'Trending Up' },
+    { type: 'news', title: 'Featured', icon: '📰', value: 'Nairobi Tech Week', detail: 'Innovation Hub' },
+    { type: 'sport', title: 'Sports', icon: '⚽', value: 'Harambee Stars', detail: 'Match Day' }
   ];
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
       if (!assessment.isSafe) {
         setErrorState({
           title: "Content Restricted",
-          msg: "The content you are trying to access has been filtered by Gatura Girls for your safety."
+          msg: "The content you are trying to access has been filtered by Miest Browser for your safety."
         });
         setCurrentContent(null);
         setCurrentAssessment(null);
@@ -125,101 +125,79 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
       
       {/* ----------------- SPLASH SCREEN ANIMATION ----------------- */}
       {showSplash && (
-        <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-black text-white">
-          <div className="relative font-black text-4xl md:text-6xl tracking-widest flex flex-col items-center gap-4">
-             {/* Stage 1: The Creators */}
-             <div className="animate-[fade-out_0.5s_3s_forwards] flex gap-8">
-               <span className="text-pink-500 animate-[pulse_1s_infinite]">ESTHER</span>
-               <span className="text-slate-500">&</span>
-               <span className="text-blue-500 animate-[pulse_1s_infinite_0.5s]">MITCHELL</span>
+        <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] text-white overflow-hidden font-mono">
+          
+          {/* Cyber Grid Background */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+          
+          <div className="relative font-black text-4xl md:text-7xl tracking-widest flex flex-col items-center gap-6 z-10 w-full">
+             
+             {/* Tech Overlay Lines */}
+             <div className="absolute -top-32 w-[1px] h-32 bg-gradient-to-b from-transparent via-pink-500 to-transparent animate-scan-vertical"></div>
+             
+             {/* Stage 1: The Creators (Tech Typing Style) */}
+             <div className="animate-[fade-out_0.5s_3s_forwards] flex gap-4 md:gap-12 items-center">
+               <div className="flex flex-col items-end">
+                   <div className="h-[1px] w-12 bg-pink-500/50 mb-2"></div>
+                   <span className="text-pink-500 font-sans tracking-[0.2em] font-bold text-2xl md:text-3xl drop-shadow-[0_0_15px_rgba(236,72,153,0.6)]">MITCHELL</span>
+               </div>
+               
+               <div className="h-16 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+               
+               <div className="flex flex-col items-start">
+                   <div className="h-[1px] w-12 bg-blue-500/50 mb-2"></div>
+                   <span className="text-blue-500 font-sans tracking-[0.2em] font-bold text-2xl md:text-3xl drop-shadow-[0_0_15px_rgba(59,130,246,0.6)]">ESTHER</span>
+               </div>
              </div>
 
-             {/* Stage 2: The Fusion (Letters merging) */}
-             <div className="absolute top-0 flex items-center gap-1 opacity-0 animate-[fade-in_0.5s_0.5s_forwards,merge_2s_1.5s_forwards]">
-                {/* E S T */}
-                <span className="text-pink-500">EST</span>
-                {/* R */}
-                <span className="text-purple-400">R</span>
-                {/* E L L */}
-                <span className="text-blue-500">ELL</span>
+             {/* Stage 2: The Fusion (Letters merging with Data Stream Effect) */}
+             <div className="absolute top-0 flex items-center justify-center gap-0 opacity-0 animate-[fade-in_0.5s_0.5s_forwards,merge_2s_1.5s_forwards]">
+                {/* MI */}
+                <span className="text-pink-500 font-black drop-shadow-[0_0_20px_rgba(236,72,153,0.8)] z-10">MI</span>
+                {/* EST */}
+                <span className="text-blue-500 font-black drop-shadow-[0_0_20px_rgba(59,130,246,0.8)] z-10">EST</span>
              </div>
 
-             {/* Stage 3: The Result */}
-             <div className="absolute top-0 opacity-0 animate-[scale-in_0.5s_3.2s_forwards]">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
-                   ESTRELL
+             {/* Stage 3: The Result (Holographic Reveal) */}
+             <div className="absolute top-0 opacity-0 animate-[scale-in_0.5s_3.2s_forwards] flex flex-col items-center">
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-blue-500 blur-3xl opacity-20 animate-pulse"></div>
+                <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-white to-blue-300 drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] z-20 font-black tracking-tight">
+                   MIEST
                 </span>
              </div>
           </div>
 
-          <div className="mt-8 text-sm md:text-base font-mono text-slate-400 opacity-0 animate-[fade-in_1s_3.5s_forwards]">
-             INTELLIGENT SAFE BROWSING
+          <div className="mt-16 flex flex-col items-center gap-4 opacity-0 animate-[fade-in_1s_3.5s_forwards]">
+             <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+             <div className="text-xs md:text-sm font-sans font-medium text-slate-400 tracking-[0.3em] uppercase">
+                 Future of Safe Browsing
+             </div>
           </div>
 
           <style>{`
             @keyframes merge {
-              0% { letter-spacing: 0.5em; opacity: 0; filter: blur(10px); }
+              0% { letter-spacing: 0.8em; opacity: 0; filter: blur(12px); transform: scale(1.1); }
               20% { opacity: 1; filter: blur(0px); }
-              80% { letter-spacing: 0em; opacity: 1; transform: scale(1); }
+              50% { letter-spacing: 0.2em; }
+              80% { letter-spacing: 0em; opacity: 1; transform: scale(1); filter: contrast(1.2); }
               100% { opacity: 0; transform: scale(1.5); filter: blur(20px); }
             }
             @keyframes scale-in {
-              0% { transform: scale(0.8); opacity: 0; }
-              100% { transform: scale(1); opacity: 1; }
+              0% { transform: scale(0.9) translateY(10px); opacity: 0; filter: blur(5px); }
+              100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
             }
             @keyframes fade-out {
-              to { opacity: 0; }
+              to { opacity: 0; filter: blur(4px); transform: scale(0.95); }
             }
-          `}</style>
-        </div>
-      )}
-
-      {/* ----------------- SPLASH SCREEN ANIMATION ----------------- */}
-      {showSplash && (
-        <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-black text-white">
-          <div className="relative font-black text-4xl md:text-6xl tracking-widest flex flex-col items-center gap-4">
-             {/* Stage 1: The Creators */}
-             <div className="animate-[fade-out_0.5s_3s_forwards] flex gap-8">
-               <span className="text-pink-500 animate-[pulse_1s_infinite]">ESTHER</span>
-               <span className="text-slate-500">&</span>
-               <span className="text-blue-500 animate-[pulse_1s_infinite_0.5s]">MITCHELL</span>
-             </div>
-
-             {/* Stage 2: The Fusion (Letters merging) */}
-             <div className="absolute top-0 flex items-center gap-1 opacity-0 animate-[fade-in_0.5s_0.5s_forwards,merge_2s_1.5s_forwards]">
-                {/* E S T */}
-                <span className="text-pink-500">EST</span>
-                {/* R */}
-                <span className="text-purple-400">R</span>
-                {/* E L L */}
-                <span className="text-blue-500">ELL</span>
-             </div>
-
-             {/* Stage 3: The Result */}
-             <div className="absolute top-0 opacity-0 animate-[scale-in_0.5s_3.2s_forwards]">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
-                   ESTRELL
-                </span>
-             </div>
-          </div>
-
-          <div className="mt-8 text-sm md:text-base font-mono text-slate-400 opacity-0 animate-[fade-in_1s_3.5s_forwards]">
-             INTELLIGENT SAFE BROWSING
-          </div>
-
-          <style>{`
-            @keyframes merge {
-              0% { letter-spacing: 0.5em; opacity: 0; filter: blur(10px); }
-              20% { opacity: 1; filter: blur(0px); }
-              80% { letter-spacing: 0em; opacity: 1; transform: scale(1); }
-              100% { opacity: 0; transform: scale(1.5); filter: blur(20px); }
+            @keyframes scan-vertical {
+              0% { top: -20%; opacity: 0; }
+              50% { opacity: 1; }
+              100% { top: 120%; opacity: 0; }
             }
-            @keyframes scale-in {
-              0% { transform: scale(0.8); opacity: 0; }
-              100% { transform: scale(1); opacity: 1; }
-            }
-            @keyframes fade-out {
-              to { opacity: 0; }
+            @keyframes glitch {
+              0%, 100% { transform: translate(0); opacity: 1; }
+              2% { transform: translate(-2px, 1px); opacity: 0.8; }
+              4% { transform: translate(2px, -1px); opacity: 1; }
             }
           `}</style>
         </div>
@@ -230,8 +208,8 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center transition-opacity duration-700"
           style={{ 
-            backgroundImage: 'url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=3540")',
-            filter: isDarkMode ? 'brightness(0.3)' : 'brightness(0.7)'
+            backgroundImage: 'url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=3540")',
+            filter: isDarkMode ? 'brightness(0.3) contrast(1.2)' : 'brightness(0.5) contrast(1.1)'
           }}
         />
       )}
@@ -297,60 +275,86 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
             </div>
           </div>
         ) : !currentContent && !loading ? (
-          /* HOME PAGE / NEW TAB (Edge Style) */
-          <div className="flex-1 flex flex-col items-center pt-24 pb-12 px-6">
-            <div className="mb-12 flex flex-col items-center animate-in fade-in slide-in-from-top-4 duration-1000">
-              <div className="bg-pink-600 p-4 rounded-3xl shadow-2xl mb-6 pulse-glow">
-                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-              </div>
-              <h2 className="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-blue-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]">ESTRELL</h2>
-              <p className="text-[10px] font-black text-white/70 uppercase tracking-[0.4em] mt-2 drop-shadow-md">Professional Safe Browse</p>
-            </div>
+          /* HOME PAGE / NEW TAB (Edge/Tech Style) */
+          <div className="flex-1 flex flex-col items-center pt-24 pb-12 px-6 relative">
             
-            <div className="w-full max-w-xl relative mb-12">
-              <input 
-                type="text" 
-                placeholder="Search securely..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleNavigation(searchQuery, 'search')}
-                className="w-full pl-6 pr-20 py-4 rounded-full border border-white/20 bg-white/20 backdrop-blur-3xl text-white placeholder-white/80 focus:bg-white/40 focus:ring-4 focus:ring-white/10 transition-all text-lg shadow-2xl outline-none"
-              />
-              <button 
-                onClick={() => handleNavigation(searchQuery, 'search')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 bg-pink-600 text-white rounded-full hover:bg-pink-700 transition"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-              </button>
+            {/* Background Grid Pattern */}
+            <div className={`absolute inset-0 pointer-events-none ${isDarkMode ? 'opacity-20' : 'opacity-10'}`}>
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
             </div>
 
-            <div className="w-full max-w-3xl grid grid-cols-4 sm:grid-cols-8 gap-4 mb-16 px-4">
+            <div className="mb-12 flex flex-col items-center animate-in fade-in slide-in-from-top-4 duration-1000 z-10 w-full text-center">
+              <div className="bg-gradient-to-br from-pink-500 to-purple-600 p-1 rounded-3xl shadow-[0_0_40px_rgba(236,72,153,0.3)] mb-6 pulse-glow">
+                 <div className="bg-black/40 backdrop-blur-md p-4 rounded-[20px] border border-white/10">
+                   <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                 </div>
+              </div>
+              <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300 drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]">MIEST</h2>
+              <div className="flex gap-3 items-center mt-3">
+                  <div className="h-[1px] w-8 bg-white/20"></div>
+                  <p className="text-[10px] font-mono text-white/70 uppercase tracking-[0.4em] drop-shadow-md">Professional Safe Browsing</p>
+                  <div className="h-[1px] w-8 bg-white/20"></div>
+              </div>
+            </div>
+            
+            <div className="w-full max-w-2xl relative mb-12 z-10">
+              <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
+                  <input 
+                    type="text" 
+                    placeholder="Search confidently..." 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleNavigation(searchQuery, 'search')}
+                    className="w-full relative pl-8 pr-20 py-5 rounded-full border border-white/10 bg-black/40 backdrop-blur-2xl text-white placeholder-slate-400 focus:bg-black/60 focus:ring-1 focus:ring-white/20 transition-all text-lg shadow-2xl outline-none font-medium tracking-wide"
+                  />
+                  <button 
+                    onClick={() => handleNavigation(searchQuery, 'search')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-3 bg-gradient-to-r from-pink-600 to-pink-500 text-white rounded-full hover:shadow-[0_0_15px_rgba(236,72,153,0.5)] transition-all transform hover:scale-105"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  </button>
+              </div>
+              <div className="flex justify-center gap-6 mt-4 opacity-70">
+                 <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                    Safe Search Active
+                 </span>
+              </div>
+            </div>
+
+            <div className="w-full max-w-4xl grid grid-cols-4 sm:grid-cols-8 gap-4 mb-16 px-4 z-10">
                {quickLinks.map((link, idx) => (
                  <button 
                   key={idx}
                   onClick={() => link.url !== 'add' && handleNavigation(link.url, 'visit')}
-                  className="group flex flex-col items-center gap-2 transition-all hover:scale-105"
+                  className="group flex flex-col items-center gap-3 transition-all hover:translate-y-[-5px]"
                  >
-                    <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-xl border border-white/10 flex items-center justify-center text-2xl shadow-lg transition-all group-hover:bg-white/30">
+                    <div className="w-14 h-14 rounded-2xl bg-white/5 backdrop-blur-md border border-white/5 group-hover:border-pink-500/30 flex items-center justify-center text-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all group-hover:bg-white/10 group-hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] relative overflow-hidden">
+                       <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                        {link.icon}
                     </div>
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-white/90 group-hover:text-white drop-shadow-md text-center truncate w-full">{link.name}</span>
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 group-hover:text-white transition-colors text-center w-full">{link.name}</span>
                  </button>
                ))}
             </div>
 
-            <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-4 gap-3 px-4">
+            <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-4 gap-4 px-4 z-10">
                {newsTiles.map((tile, idx) => (
                  <div 
                    key={idx}
-                   className="p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/5 hover:border-white/20 transition-all cursor-pointer"
+                   className="p-5 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/5 hover:border-pink-500/30 transition-all cursor-pointer group"
                  >
-                    <div className="flex justify-between items-start mb-1">
-                       <span className="text-[8px] font-black text-pink-400 uppercase tracking-widest">{tile.title}</span>
-                       <span className="text-base">{tile.icon}</span>
+                    <div className="flex justify-between items-start mb-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                       <span className="text-[9px] font-mono text-pink-400/80 uppercase tracking-widest">{tile.title}</span>
+                       <span className="text-sm bg-white/5 p-1.5 rounded-md">{tile.icon}</span>
                     </div>
-                    <p className="text-lg font-black text-white">{tile.value}</p>
-                    <p className="text-[9px] font-bold text-white/40 uppercase mt-0.5">{tile.detail}</p>
+                    <div className="h-[1px] w-full bg-white/5 mb-3"></div>
+                    <p className="text-xl font-bold text-white group-hover:text-pink-100 transition-colors">{tile.value}</p>
+                    <p className="text-[10px] font-mono text-emerald-400 uppercase mt-1 flex items-center gap-1">
+                        <span className="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span>
+                        {tile.detail}
+                    </p>
                  </div>
                ))}
             </div>
@@ -371,7 +375,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
 
              <div className="max-w-5xl mx-auto w-full px-6 py-8">
                 {/* Result Summary */}
-                <p className={`text-xs ${textSecondary} mb-8 font-medium`}>About 2,400 results for "{currentContent}" • Gatura Secure Search</p>
+                <p className={`text-xs ${textSecondary} mb-8 font-medium`}>About 2,400 results for "{currentContent}" • Miest Secure Search</p>
 
                 {/* Main Results Column */}
                 <div className="space-y-10 max-w-3xl">
@@ -384,7 +388,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                           </div>
                           <div className="flex items-center gap-2 mb-2">
                              <span className="text-xl">✨</span>
-                             <span className="text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">Gatura Guide • Explain Like I'm...</span>
+                             <span className="text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">Miest Guide • Explain Like I'm...</span>
                           </div>
                           <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">{currentContent}: The Simple Version</h3>
                           <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-medium relative z-10">
@@ -397,14 +401,14 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                    <div className="group border-l-4 border-pink-500 pl-4 py-2 bg-pink-50/50 dark:bg-pink-900/10 rounded-r-xl">
                       <div className="flex flex-col gap-0.5 mb-1">
                          <span className="text-xs text-pink-600 dark:text-pink-400 font-bold tracking-wider uppercase">
-                            Gatura Smart System • {currentAssessment?.sophistication === 'ACADEMIC' ? 'Advanced' : currentAssessment?.sophistication === 'ELEMENTARY' ? 'Simple' : 'Standard'} Level
+                            Miest Smart System • {currentAssessment?.sophistication === 'ACADEMIC' ? 'Advanced' : currentAssessment?.sophistication === 'ELEMENTARY' ? 'Simple' : 'Standard'} Level
                          </span>
                       </div>
                       <h4 className={`text-xl font-black cursor-pointer transition-colors mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
                         {currentContent && currentContent.charAt(0).toUpperCase() + currentContent.slice(1)}: Smart Summary
                       </h4>
                       <p className={`text-sm leading-relaxed max-w-2xl font-medium ${isDarkMode ? 'text-[#bdc1c6]' : 'text-slate-600'}`}>
-                        {currentAssessment?.reason || "Content checked by Gatura."}
+                        {currentAssessment?.reason || "Content checked by Miest."}
                       </p>
                    </div>
 
@@ -412,22 +416,46 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                    {(currentAssessment?.searchResults && currentAssessment.searchResults.length > 0 
                       ? currentAssessment.searchResults 
                       : [
-                          { title: `More regarding "${currentContent}"`, url: `https://secure.gatura.girls/browse`, snippet: "Explore more verified educational resources and safe content related to your search. Gatura Girls ensures all destination links remain within safe browsing parameters.", source: "Gatura Safe Search" },
-                          { title: `Educational Resources: ${currentContent}`, url: `https://edu.gatura.girls/topics`, snippet: "Find verified academic papers, articles, and learning materials suitable for your level.", source: "Gatura Education" }
+                          { title: `More regarding "${currentContent}"`, url: `https://secure.miest.browser/browse`, snippet: "Explore more verified educational resources and safe content related to your search. Miest Browser ensures all destination links remain within safe browsing parameters.", source: "Miest Safe Search" },
+                          { title: `Educational Resources: ${currentContent}`, url: `https://edu.miest.browser/topics`, snippet: "Find verified academic papers, articles, and learning materials suitable for your level.", source: "Miest Education" }
                         ]
                    ).map((result, i) => (
-                      <div key={i} className="group pl-4 mb-8">
+                      <div key={i} className="group pl-4 mb-10">
                          <div className="flex flex-col gap-0.5 mb-1">
-                            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium truncate">
+                            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono tracking-wider truncate uppercase">
                                {result.url} › {result.source}
                             </span>
                          </div>
-                         <a href={result.url} target="_blank" rel="noopener noreferrer" className={`text-xl font-bold cursor-pointer transition-colors mb-1 block ${isDarkMode ? 'text-[#8ab4f8] hover:text-[#a8c7fa] hover:underline' : 'text-[#1a0dab] hover:text-[#1e13bd] hover:underline'}`}>
+                         <a href={result.url} target="_blank" rel="noopener noreferrer" className={`text-xl font-bold cursor-pointer transition-colors mb-2 block ${isDarkMode ? 'text-[#8ab4f8] hover:text-[#a8c7fa] hover:underline' : 'text-[#1a0dab] hover:text-[#1e13bd] hover:underline'}`}>
                            {result.title}
                          </a>
-                         <p className={`text-sm leading-relaxed max-w-2xl ${isDarkMode ? 'text-[#bdc1c6]' : 'text-slate-600'}`}>
+                         
+                         {/* Enhanced Snippet (Vast Info) */}
+                         <p className={`text-sm leading-7 max-w-3xl font-medium ${isDarkMode ? 'text-[#bdc1c6]' : 'text-slate-600'}`}>
                            {result.snippet}
                          </p>
+
+                         {/* Key Points Expansion */}
+                         {result.keyPoints && result.keyPoints.length > 0 && (
+                            <div className="mt-3 pl-4 border-l-2 border-pink-500/20">
+                               <ul className="list-disc text-sm space-y-1 text-slate-500 dark:text-slate-400 marker:text-pink-500">
+                                  {result.keyPoints.map((point, k) => (
+                                      <li key={k}>{point}</li>
+                                  ))}
+                               </ul>
+                            </div>
+                         )}
+
+                         {/* Sub-Links (Clickable Expansion) */}
+                         {result.subLinks && result.subLinks.length > 0 && (
+                            <div className="mt-4 flex flex-wrap gap-2">
+                               {result.subLinks.map((sub, s) => (
+                                  <a key={s} href={sub.url} className={`text-xs px-3 py-1 rounded-full border transition-colors flex items-center gap-1 ${isDarkMode ? 'border-white/10 bg-white/5 hover:bg-white/10 text-slate-300' : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600'}`}>
+                                     <span className="opacity-50">↳</span> {sub.title}
+                                  </a>
+                               ))}
+                            </div>
+                         )}
                       </div>
                    ))}
                 </div>
