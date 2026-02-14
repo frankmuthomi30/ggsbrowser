@@ -199,6 +199,30 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
               2% { transform: translate(-2px, 1px); opacity: 0.8; }
               4% { transform: translate(2px, -1px); opacity: 1; }
             }
+
+            /* NEW HOME PAGE ANIMATIONS */
+            .animate-pulse-slow { animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+            @keyframes pulse {
+              0%, 100% { opacity: 0.3; transform: scale(1); }
+              50% { opacity: 0.6; transform: scale(1.1); }
+            }
+            
+            .animate-tilt { animation: tilt 10s infinite linear; }
+            @keyframes tilt {
+               0%, 50%, 100% { transform: rotate(0deg); }
+               25% { transform: rotate(0.5deg); }
+               75% { transform: rotate(-0.5deg); }
+            }
+            
+            .animate-fade-in-up { animation: fadeInUp 1s ease-out forwards; }
+            @keyframes fadeInUp {
+               from { opacity: 0; transform: translateY(20px); }
+               to { opacity: 1; transform: translateY(0); }
+            }
+            
+            .delay-1000 { animation-delay: 1000ms; }
+            .delay-200 { animation-delay: 200ms; }
+            .delay-300 { animation-delay: 300ms; }
           `}</style>
         </div>
       )}
@@ -275,89 +299,98 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
             </div>
           </div>
         ) : !currentContent && !loading ? (
-          /* HOME PAGE / NEW TAB (Edge/Tech Style) */
-          <div className="flex-1 flex flex-col items-center pt-24 pb-12 px-6 relative">
+          /* HOME PAGE / NEW TAB (Redesigned Eye-Catching Style) */
+          <div className="flex-1 flex flex-col items-center justify-center relative overflow-hidden">
             
-            {/* Background Grid Pattern */}
-            <div className={`absolute inset-0 pointer-events-none ${isDarkMode ? 'opacity-20' : 'opacity-10'}`}>
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+            {/* Dynamic Background */}
+            <div className="absolute inset-0 z-0">
+               {/* Background Image with Parallax-feel */}
+               <div 
+                  className="absolute inset-0 bg-cover bg-center transition-all duration-1000 transform scale-105"
+                  style={{ 
+                    backgroundImage: 'url("https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+                    filter: isDarkMode ? 'brightness(0.5) contrast(1.1) saturate(1.1)' : 'brightness(0.9) contrast(1.1) saturate(1.2)'
+                  }}
+               />
+               {/* Overlay Gradients */}
+               <div className={`absolute inset-0 bg-gradient-to-b ${isDarkMode ? 'from-black/60 via-transparent to-black/90' : 'from-black/30 via-transparent to-black/60'}`} />
+               
+               {/* Animated Orbs */}
+               <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-[100px] animate-pulse-slow"></div>
+               <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-[100px] animate-pulse-slow delay-1000"></div>
             </div>
 
-            <div className="mb-12 flex flex-col items-center animate-in fade-in slide-in-from-top-4 duration-1000 z-10 w-full text-center">
-              <div className="bg-gradient-to-br from-pink-500 to-purple-600 p-1 rounded-3xl shadow-[0_0_40px_rgba(236,72,153,0.3)] mb-6 pulse-glow">
-                 <div className="bg-black/40 backdrop-blur-md p-4 rounded-[20px] border border-white/10">
-                   <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                 </div>
-              </div>
-              <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300 drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]">MIEST</h2>
-              <div className="flex gap-3 items-center mt-3">
-                  <div className="h-[1px] w-8 bg-white/20"></div>
-                  <p className="text-[10px] font-mono text-white/70 uppercase tracking-[0.4em] drop-shadow-md">Professional Safe Browsing</p>
-                  <div className="h-[1px] w-8 bg-white/20"></div>
-              </div>
-            </div>
-            
-            <div className="w-full max-w-2xl relative mb-12 z-10">
-              <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
-                  <input 
-                    type="text" 
-                    placeholder="Search confidently..." 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleNavigation(searchQuery, 'search')}
-                    className="w-full relative pl-8 pr-20 py-5 rounded-full border border-white/10 bg-black/40 backdrop-blur-2xl text-white placeholder-slate-400 focus:bg-black/60 focus:ring-1 focus:ring-white/20 transition-all text-lg shadow-2xl outline-none font-medium tracking-wide"
-                  />
-                  <button 
-                    onClick={() => handleNavigation(searchQuery, 'search')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-3 bg-gradient-to-r from-pink-600 to-pink-500 text-white rounded-full hover:shadow-[0_0_15px_rgba(236,72,153,0.5)] transition-all transform hover:scale-105"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                  </button>
-              </div>
-              <div className="flex justify-center gap-6 mt-4 opacity-70">
-                 <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-                    Safe Search Active
-                 </span>
-              </div>
-            </div>
-
-            <div className="w-full max-w-4xl grid grid-cols-4 sm:grid-cols-8 gap-4 mb-16 px-4 z-10">
-               {quickLinks.map((link, idx) => (
-                 <button 
-                  key={idx}
-                  onClick={() => link.url !== 'add' && handleNavigation(link.url, 'visit')}
-                  className="group flex flex-col items-center gap-3 transition-all hover:translate-y-[-5px]"
-                 >
-                    <div className="w-14 h-14 rounded-2xl bg-white/5 backdrop-blur-md border border-white/5 group-hover:border-pink-500/30 flex items-center justify-center text-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all group-hover:bg-white/10 group-hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] relative overflow-hidden">
-                       <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                       {link.icon}
+            <div className="relative z-10 w-full max-w-5xl mx-auto px-6 flex flex-col items-center">
+              
+              {/* BRANDING: The Centerpiece */}
+              <div className="mb-12 flex flex-col items-center animate-fade-in-up">
+                 <div className="relative mb-6 group cursor-default">
+                    <div className="absolute -inset-4 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full opacity-20 group-hover:opacity-40 blur-xl transition duration-500 animate-tilt"></div>
+                    <div className="relative bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/20 shadow-2xl ring-1 ring-white/20">
+                       <svg className="w-16 h-16 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
                     </div>
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 group-hover:text-white transition-colors text-center w-full">{link.name}</span>
-                 </button>
-               ))}
+                 </div>
+                 
+                 <h1 className="text-7xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)] mb-2 select-none">
+                    MIEST
+                 </h1>
+                 <p className="text-sm md:text-base font-medium text-white/80 tracking-[0.3em] uppercase backdrop-blur-sm px-4 py-1 rounded-full border border-white/10 bg-black/20">
+                    The Safe Web Experience
+                 </p>
+              </div>
+              
+              {/* SEARCH: The Portal */}
+              <div className="w-full max-w-2xl relative mb-16 z-20 group animate-fade-in-up delay-200">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-full blur opacity-30 group-hover:opacity-60 transition duration-700 group-hover:duration-200"></div>
+                  <div className="relative flex items-center">
+                    <input 
+                      type="text" 
+                      placeholder="Where do you want to go safely?" 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleNavigation(searchQuery, 'search')}
+                      className={`w-full pl-8 pr-20 py-5 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl text-white placeholder-white/50 focus:bg-white/20 focus:outline-none transition-all text-lg shadow-2xl font-medium tracking-wide`}
+                    />
+                    <button 
+                      onClick={() => handleNavigation(searchQuery, 'search')}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 p-3 bg-white text-pink-600 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all duration-300"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </button>
+                  </div>
+              </div>
+
+              {/* QUICK ACCESS: The Dashboard */}
+              <div className="grid grid-cols-4 sm:grid-cols-8 gap-4 sm:gap-6 mb-12 animate-fade-in-up delay-300 w-full max-w-4xl">
+                 {quickLinks.map((link, idx) => (
+                   <button 
+                    key={idx}
+                    onClick={() => link.url !== 'add' && handleNavigation(link.url, 'visit')}
+                    className="group flex flex-col items-center gap-3 transition-all hover:-translate-y-2"
+                   >
+                      <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-3xl shadow-lg transition-all group-hover:bg-white/20 group-hover:border-white/30 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] position-relative overflow-hidden">
+                         <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                         <span className="transform group-hover:scale-110 transition-transform duration-300 drop-shadow-md">{link.icon}</span>
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-white/70 group-hover:text-white transition-colors text-center shadow-black/50 drop-shadow-md">{link.name}</span>
+                   </button>
+                 ))}
+              </div>
             </div>
 
-            <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-4 gap-4 px-4 z-10">
-               {newsTiles.map((tile, idx) => (
-                 <div 
-                   key={idx}
-                   className="p-5 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/5 hover:border-pink-500/30 transition-all cursor-pointer group"
-                 >
-                    <div className="flex justify-between items-start mb-2 opacity-80 group-hover:opacity-100 transition-opacity">
-                       <span className="text-[9px] font-mono text-pink-400/80 uppercase tracking-widest">{tile.title}</span>
-                       <span className="text-sm bg-white/5 p-1.5 rounded-md">{tile.icon}</span>
-                    </div>
-                    <div className="h-[1px] w-full bg-white/5 mb-3"></div>
-                    <p className="text-xl font-bold text-white group-hover:text-pink-100 transition-colors">{tile.value}</p>
-                    <p className="text-[10px] font-mono text-emerald-400 uppercase mt-1 flex items-center gap-1">
-                        <span className="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span>
-                        {tile.detail}
-                    </p>
-                 </div>
-               ))}
+            {/* Bottom Info Bar */}
+            <div className="absolute bottom-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent flex justify-between items-end text-white/60 text-xs font-medium tracking-wider z-10">
+               <div>
+                  <span className="block text-white/90 font-bold mb-1">Miest Safe Browse v2.0</span>
+                  <span>Protected by Gemini AI • Real-time Scans</span>
+               </div>
+               <div className="flex gap-4">
+                  <span className="hover:text-white cursor-pointer transition-colors">Privacy</span>
+                  <span className="hover:text-white cursor-pointer transition-colors">Terms</span>
+                  <span className="hover:text-white cursor-pointer transition-colors">Settings</span>
+               </div>
             </div>
+
           </div>
         ) : (
           /* SEARCH RESULTS PAGE (Browser Style) */
