@@ -383,14 +383,59 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
         )}
 
         {errorState ? (
-          <div className="flex-1 flex items-center justify-center min-h-full p-12">
-            <div className="max-w-xl w-full p-10 bg-white dark:bg-slate-900 border border-red-100 dark:border-red-900 shadow-2xl rounded-3xl text-center">
-               <div className="bg-red-50 dark:bg-red-900/20 p-5 rounded-full text-red-600 dark:text-red-400 w-fit mx-auto mb-8">
-                  <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+          <div className="flex-1 flex items-center justify-center min-h-full p-6 animate-in fade-in slide-in-from-bottom-8 duration-500">
+            <div className={`max-w-3xl w-full p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden ${isDarkMode ? 'bg-[#0f1014] border border-white/5' : 'bg-white border border-slate-100'}`}>
+               
+               {/* Gentle Background Decor */}
+               <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500"></div>
+               <div className="absolute -top-32 -right-32 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
+               <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+               <div className="relative z-10 flex flex-col items-center text-center">
+                  {/* Friendly Icon */}
+                  <div className="mb-8 relative">
+                     <div className="absolute inset-0 bg-pink-500/20 blur-xl rounded-full"></div>
+                     <div className="bg-gradient-to-br from-white to-slate-100 dark:from-slate-800 dark:to-slate-900 p-6 rounded-3xl shadow-lg border border-white/20 dark:border-white/5 relative transform hover:scale-105 transition-transform duration-300">
+                        <svg className="w-16 h-16 text-pink-500 dark:text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                     </div>
+                  </div>
+                  
+                  <h3 className={`text-4xl md:text-5xl font-black mb-6 tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                     Whoops! Let's Detour.
+                  </h3>
+                  
+                  <div className={`text-lg leading-relaxed max-w-xl mx-auto mb-10 font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                     <p className="mb-4">{errorState.msg || "That search went down a path we don't explore here."}</p>
+                     <p className="text-sm opacity-70">Miest suggests trying something more creative or academic instead.</p>
+                  </div>
+
+                  {/* Helpful Diversion Suggestions */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg mb-10">
+                     <button onClick={() => handleNavigation('Space Exploration', 'visit')} className={`p-4 rounded-2xl text-left transition-all group ${isDarkMode ? 'bg-white/5 hover:bg-white/10' : 'bg-slate-50 hover:bg-slate-100'}`}>
+                        <span className="block text-xs font-bold text-cyan-500 uppercase tracking-wider mb-1">Science Information</span>
+                        <span className={`block font-bold group-hover:translate-x-1 transition-transform ${textPrimary}`}>Explore Space 🚀</span>
+                     </button>
+                     <button onClick={() => handleNavigation('Learn Coding', 'visit')} className={`p-4 rounded-2xl text-left transition-all group ${isDarkMode ? 'bg-white/5 hover:bg-white/10' : 'bg-slate-50 hover:bg-slate-100'}`}>
+                        <span className="block text-xs font-bold text-pink-500 uppercase tracking-wider mb-1">New Skills</span>
+                        <span className={`block font-bold group-hover:translate-x-1 transition-transform ${textPrimary}`}>Learn to Code 💻</span>
+                     </button>
+                     <button onClick={() => handleNavigation('Famous Artists', 'visit')} className={`p-4 rounded-2xl text-left transition-all group ${isDarkMode ? 'bg-white/5 hover:bg-white/10' : 'bg-slate-50 hover:bg-slate-100'}`}>
+                        <span className="block text-xs font-bold text-purple-500 uppercase tracking-wider mb-1">Creativity</span>
+                        <span className={`block font-bold group-hover:translate-x-1 transition-transform ${textPrimary}`}>Famous Artists 🎨</span>
+                     </button>
+                     <button onClick={() => handleNavigation('Mental Health', 'visit')} className={`p-4 rounded-2xl text-left transition-all group ${isDarkMode ? 'bg-white/5 hover:bg-white/10' : 'bg-slate-50 hover:bg-slate-100'}`}>
+                        <span className="block text-xs font-bold text-emerald-500 uppercase tracking-wider mb-1">Wellbeing</span>
+                        <span className={`block font-bold group-hover:translate-x-1 transition-transform ${textPrimary}`}>Mental Wellness 🌿</span>
+                     </button>
+                  </div>
+
+                  <button 
+                     onClick={() => { setErrorState(null); setSearchQuery(''); }} 
+                     className="px-10 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl"
+                  >
+                     Start Fresh
+                  </button>
                </div>
-               <h3 className="text-2xl font-black mb-4 dark:text-white uppercase tracking-tight">{errorState.title}</h3>
-               <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-8">{errorState.msg}</p>
-               <button onClick={() => { setErrorState(null); setSearchQuery(''); }} className="px-8 py-3 bg-pink-600 text-white rounded-xl font-black uppercase tracking-widest hover:bg-pink-700 transition">Back to Home</button>
             </div>
           </div>
         ) : !currentContent && !loading ? (
