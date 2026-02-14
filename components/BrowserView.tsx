@@ -35,7 +35,21 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
     'Connecting to secure servers...',
     'Checking content safety...',
     'Analyzing reliability...',
-    'Almost ready...'
+    'Scanning for threats...',
+    'Verifying certificates...',
+    'Optimizing experience...',
+    'Almost there...',
+    'Finalizing...',
+    'Working on it...',
+    'Being smart enough...',
+    'Securing your connection...',
+    'Loading relevant content...',
+    'Preparing your safe space...',
+    'Filtering harmful data...',
+    'Engaging AI protocols...',
+    'Just a few seconds more...',
+    'Decoding the web safely...',
+    'Miest is on it...'
   ];
 
   const quickLinks = [
@@ -59,14 +73,15 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
   useEffect(() => {
     let interval: number;
     if (loading) {
+      // Shuffle logic with array copy
+      const shuffled = [...loadingMessages].sort(() => Math.random() - 0.5);
       let i = 0;
-      setLoadingMessage(loadingMessages[0]);
+      setLoadingMessage(shuffled[0]);
+      
       interval = window.setInterval(() => {
-        i++;
-        if (i < loadingMessages.length) {
-          setLoadingMessage(loadingMessages[i]);
-        }
-      }, 700);
+        i = (i + 1) % shuffled.length; // Loop infinitely securely
+        setLoadingMessage(shuffled[i]);
+      }, 800);
     }
     return () => clearInterval(interval);
   }, [loading]);
@@ -360,14 +375,9 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                   <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-bounce delay-150"></span>
                   <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-bounce delay-300"></span>
                </div>
-               <p className={`text-[10px] font-bold uppercase tracking-[0.3em] opacity-70 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                 {loadingMessage || 'Establishing Secure Connection...'}
+               <p className={`text-[10px] font-bold uppercase tracking-[0.3em] opacity-70 transition-all duration-300 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                 {loadingMessage}
                </p>
-            </div>
-
-            {/* Simulated Progress Bar */}
-            <div className="mt-8 w-64 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden relative">
-               <div className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-pink-500 to-cyan-500 animate-[loading-bar_1.5s_ease-in-out_infinite]"></div>
             </div>
           </div>
         )}
