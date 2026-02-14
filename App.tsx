@@ -216,6 +216,7 @@ const App: React.FC = () => {
             </div>
             <div>
               <span className={`text-xl font-black tracking-tight ${alertSettings.theme === 'glass-dark' ? 'text-white' : 'text-slate-900'}`}>Miest Safe Browse</span>
+              <span className="ml-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden sm:inline-block border-l pl-3 border-slate-300/30">v2.4 • Secure Connection</span>
               {viewMode === 'parent' && (
                 <>
                   <span className="ml-1 text-xs font-bold text-pink-500 uppercase">Safe Browse</span>
@@ -249,7 +250,7 @@ const App: React.FC = () => {
 
       <main className={`flex-1 w-full ${viewMode === 'browser' ? 'p-0' : 'max-w-7xl mx-auto p-6'} transition-all duration-500`}>
         {viewMode === 'browser' ? (
-          <div className="h-[calc(100vh-108px)] animate-in fade-in duration-500">
+          <div className="h-full animate-in fade-in duration-500">
              <BrowserView onActivity={handleNewActivity} theme={alertSettings.theme} onUpdateTheme={handleUpdateTheme} />
           </div>
         ) : !isAuthenticated ? (
@@ -303,20 +304,6 @@ const App: React.FC = () => {
           </div>
         )}
       </main>
-
-      <footer className={`${alertSettings.theme === 'glass-dark' ? 'bg-slate-900/50 text-slate-400 border-slate-700' : 'bg-white/50 text-slate-400 border-slate-200'} border-t py-3 px-6 flex justify-between items-center text-[10px] font-bold uppercase tracking-widest transition-all`}>
-        <div className="flex gap-6">
-          {viewMode === 'parent' && isAuthenticated ? (
-            <>
-              <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-emerald-500"></div> System: Protected</span>
-              <span className="flex items-center gap-1"><div className={`w-2 h-2 rounded-full ${alertSettings.smsEnabled ? 'bg-pink-500' : 'bg-slate-300'}`}></div> SMS Alerts: {alertSettings.smsEnabled ? 'Live' : 'Off'}</span>
-            </>
-          ) : (
-             <span className="flex items-center gap-1 text-slate-300">Miest v2.4 • Secure Connection</span>
-          )}
-        </div>
-        <div>&copy; {new Date().getFullYear()} Miest Safe Browse</div>
-      </footer>
     </div>
   );
 };
