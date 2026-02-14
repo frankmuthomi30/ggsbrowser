@@ -324,7 +324,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
       {/* Browser Viewport */}
       <div className="flex-1 overflow-y-auto relative z-10 scrollbar-hide">
         {loading && (
-          <div className={`absolute inset-0 z-50 flex flex-col items-center justify-center animate-in fade-in duration-300 backdrop-blur-md ${isDarkMode ? 'bg-black/90' : 'bg-white/95'}`}>
+          <div className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center animate-in fade-in duration-300 backdrop-blur-md ${isDarkMode ? 'bg-black/90' : 'bg-white/95'} w-screen h-screen`}>
             
             {/* Ambient Background Glow */}
             <div className="absolute inset-0 bg-gradient-to-t from-pink-500/10 to-cyan-500/10 animate-pulse"></div>
