@@ -125,82 +125,125 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
       
       {/* ----------------- SPLASH SCREEN ANIMATION ----------------- */}
       {showSplash && (
-        <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] text-white overflow-hidden font-mono">
+        <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#000] overflow-hidden font-sans">
           
-          {/* Cyber Grid Background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+          {/* Animated Background Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0c0c0c] via-[#120b18] to-[#040810] animate-gradient-xy opacity-90"></div>
           
-          <div className="relative font-black text-4xl md:text-7xl tracking-widest flex flex-col items-center gap-6 z-10 w-full">
-             
-             {/* Tech Overlay Lines */}
-             <div className="absolute -top-32 w-[1px] h-32 bg-gradient-to-b from-transparent via-pink-500 to-transparent animate-scan-vertical"></div>
-             
-             {/* Stage 1: The Creators (Tech Typing Style) */}
-             <div className="animate-[fade-out_0.5s_3s_forwards] flex gap-4 md:gap-12 items-center">
-               <div className="flex flex-col items-end">
-                   <div className="h-[1px] w-12 bg-pink-500/50 mb-2"></div>
-                   <span className="text-pink-500 font-sans tracking-[0.2em] font-bold text-2xl md:text-3xl drop-shadow-[0_0_15px_rgba(236,72,153,0.6)]">MITCHELL</span>
-               </div>
-               
-               <div className="h-16 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
-               
-               <div className="flex flex-col items-start">
-                   <div className="h-[1px] w-12 bg-blue-500/50 mb-2"></div>
-                   <span className="text-blue-500 font-sans tracking-[0.2em] font-bold text-2xl md:text-3xl drop-shadow-[0_0_15px_rgba(59,130,246,0.6)]">ESTHER</span>
-               </div>
-             </div>
-
-             {/* Stage 2: The Fusion (Letters merging with Data Stream Effect) */}
-             <div className="absolute top-0 flex items-center justify-center gap-0 opacity-0 animate-[fade-in_0.5s_0.5s_forwards,merge_2s_1.5s_forwards]">
-                {/* MI */}
-                <span className="text-pink-500 font-black drop-shadow-[0_0_20px_rgba(236,72,153,0.8)] z-10">MI</span>
-                {/* EST */}
-                <span className="text-blue-500 font-black drop-shadow-[0_0_20px_rgba(59,130,246,0.8)] z-10">EST</span>
-             </div>
-
-             {/* Stage 3: The Result (Holographic Reveal) */}
-             <div className="absolute top-0 opacity-0 animate-[scale-in_0.5s_3.2s_forwards] flex flex-col items-center">
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-blue-500 blur-3xl opacity-20 animate-pulse"></div>
-                <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-white to-blue-300 drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] z-20 font-black tracking-tight">
-                   MIEST
-                </span>
-             </div>
+          {/* Dynamic Light Beams */}
+          <div className="absolute inset-0 opacity-30 pointer-events-none">
+             <div className="absolute -top-1/4 left-1/3 w-px h-[150%] bg-gradient-to-b from-transparent via-pink-400 to-transparent animate-beam-slow rotate-12 origin-top"></div>
+             <div className="absolute -top-1/4 right-1/3 w-px h-[150%] bg-gradient-to-b from-transparent via-cyan-400 to-transparent animate-beam-slower rotate-[-12deg] origin-top delay-700"></div>
           </div>
 
-          <div className="mt-16 flex flex-col items-center gap-4 opacity-0 animate-[fade-in_1s_3.5s_forwards]">
-             <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-             <div className="text-xs md:text-sm font-sans font-medium text-slate-400 tracking-[0.3em] uppercase">
-                 Future of Safe Browsing
+          <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
+             
+             {/* Central Logo Construction */}
+             <div className="relative w-48 h-48 mb-8 flex items-center justify-center">
+                {/* Ring 1 - Dashed */}
+                <div className="absolute inset-0 rounded-full border border-dashed border-pink-500/20 animate-[spin_10s_linear_infinite]"></div>
+                {/* Ring 2 - Solid Thin */}
+                <div className="absolute inset-6 rounded-full border border-blue-500/30 animate-[spin_6s_linear_infinite_reverse]"></div>
+                {/* Ring 3 - Glowing Core */}
+                <div className="absolute inset-12 rounded-full border-2 border-white/5 animate-pulse shadow-[0_0_30px_rgba(255,255,255,0.05)]"></div>
+                
+                {/* Ethereal Glow */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-pink-600/10 to-cyan-600/10 blur-3xl animate-pulse"></div>
+                
+                {/* Icon Reveal */}
+                <div className="relative z-20 animate-[scale-in_1.2s_cubic-bezier(0.16,1,0.3,1)_forwards] opacity-0 flex items-center justify-center scale-75" style={{ animationDelay: '0.2s' }}>
+                   <div className="bg-white/5 backdrop-blur-md p-5 rounded-3xl border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.1)] group">
+                      <svg className="w-20 h-20 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                   </div>
+                </div>
+             </div>
+
+             {/* Text Reveal */}
+             <div className="overflow-hidden mb-8 text-center relative z-20 mix-blend-screen">
+                <h1 className="text-8xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-white to-cyan-200 animate-[slide-up_1.2s_cubic-bezier(0.16,1,0.3,1)_forwards] translate-y-full opacity-0 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]" style={{ animationDelay: '0.5s' }}>
+                   MIEST
+                </h1>
+                <div className="h-px w-0 bg-gradient-to-r from-transparent via-white/50 to-transparent mx-auto animate-[width-expand_1s_ease-out_1s_forwards]"></div>
+             </div>
+             
+             {/* Dynamic Loader & Status */}
+             <div className="flex flex-col items-center gap-6 animate-[fade-in_1s_ease-out_1.5s_forwards] opacity-0 w-full max-w-xs relative z-20">
+                <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden relative">
+                   <div className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-pink-500 via-white to-cyan-500 blur-[2px] animate-[loading-bar_2s_ease-in-out_infinite]"></div>
+                </div>
+                <div className="flex justify-between w-full text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+                   <span>System Initializing...</span>
+                   <span className="text-emerald-400 animate-pulse">READY</span>
+                </div>
+             </div>
+             
+             {/* Footer Credits */}
+             <div className="absolute bottom-10 animate-[fade-in_1s_ease-out_2.5s_forwards] opacity-0 text-center w-full">
+                <p className="text-[10px] text-slate-500 font-bold tracking-[0.3em] uppercase mb-2">Architected By</p>
+                <div className="flex justify-center gap-4 text-xs font-black text-slate-300 tracking-[0.2em]">
+                   <span className="hover:text-pink-400 transition-colors cursor-default drop-shadow-[0_0_8px_rgba(236,72,153,0.5)]">MITCHELL</span>
+                   <span className="text-slate-600">x</span>
+                   <span className="hover:text-cyan-400 transition-colors cursor-default drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">ESTHER</span>
+                </div>
              </div>
           </div>
 
           <style>{`
-            @keyframes merge {
-              0% { letter-spacing: 0.8em; opacity: 0; filter: blur(12px); transform: scale(1.1); }
-              20% { opacity: 1; filter: blur(0px); }
-              50% { letter-spacing: 0.2em; }
-              80% { letter-spacing: 0em; opacity: 1; transform: scale(1); filter: contrast(1.2); }
-              100% { opacity: 0; transform: scale(1.5); filter: blur(20px); }
+            @keyframes width-expand {
+              0% { width: 0; }
+              100% { width: 100%; max-width: 200px; }
             }
-            @keyframes scale-in {
-              0% { transform: scale(0.9) translateY(10px); opacity: 0; filter: blur(5px); }
-              100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
+            @keyframes gradient-xy {
+              0% { background-size: 100% 100%; }
+              50% { background-size: 120% 120%; }
+              100% { background-size: 100% 100%; }
             }
-            @keyframes fade-out {
-              to { opacity: 0; filter: blur(4px); transform: scale(0.95); }
+            @keyframes beam-slow {
+              0% { transform: translateY(-30%); opacity: 0; }
+              20% { opacity: 1; }
+              80% { opacity: 1; }
+              100% { transform: translateY(30%); opacity: 0; }
             }
-            @keyframes scan-vertical {
-              0% { top: -20%; opacity: 0; }
-              50% { opacity: 1; }
-              100% { top: 120%; opacity: 0; }
+            @keyframes beam-slower {
+              0% { transform: translateY(-30%); opacity: 0; }
+              50% { opacity: 0.5; }
+              100% { transform: translateY(30%); opacity: 0; }
             }
-            @keyframes glitch {
-              0%, 100% { transform: translate(0); opacity: 1; }
-              2% { transform: translate(-2px, 1px); opacity: 0.8; }
-              4% { transform: translate(2px, -1px); opacity: 1; }
+            .animate-beam-slow { animation: beam-slow 4s infinite linear; }
+            .animate-beam-slower { animation: beam-slower 6s infinite linear; }
+            
+            @keyframes slide-up {
+              from { transform: translateY(100%); opacity: 0; }
+              to { transform: translateY(0); opacity: 1; }
+            }
+             
+            /* Redefine loading-bar to avoid conflict */
+            @keyframes loading-bar {
+              0% { left: -50%; }
+              100% { left: 150%; }
             }
 
-            /* NEW HOME PAGE ANIMATIONS */
+            @keyframes scale-in {
+              0% { transform: scale(0.8); opacity: 0; filter: blur(10px); }
+              100% { transform: scale(1); opacity: 1; filter: blur(0); }
+            }
+            @keyframes fade-in {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            
+            /* Keep existing animations required for other parts if any, but override for Splash */
+            @keyframes merge {
+               0% { letter-spacing: 0.5em; opacity: 0; }
+               100% { letter-spacing: 0; opacity: 1; }
+            }
+            @keyframes fade-out {
+               to { opacity: 0; }
+            }
+            
+            /* NEW HOME PAGE ANIMATIONS (Preserved) */
             .animate-pulse-slow { animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
             @keyframes pulse {
               0%, 100% { opacity: 0.3; transform: scale(1); }
