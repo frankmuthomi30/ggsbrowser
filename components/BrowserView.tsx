@@ -308,8 +308,8 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                <div 
                   className="absolute inset-0 bg-cover bg-center transition-all duration-1000 transform scale-105"
                   style={{ 
-                    backgroundImage: 'url("https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
-                    filter: isDarkMode ? 'brightness(0.5) contrast(1.1) saturate(1.1)' : 'brightness(0.9) contrast(1.1) saturate(1.2)'
+                    backgroundImage: 'url("https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&q=80&w=2670")',
+                    filter: isDarkMode ? 'brightness(0.4) saturate(1.2)' : 'brightness(0.9)'
                   }}
                />
                {/* Overlay Gradients */}
