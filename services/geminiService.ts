@@ -55,8 +55,8 @@ const localFallbackCheck = (input: string): RiskAssessment | null => {
 
     // --- DRUGS & SUBSTANCES ---
     'drugs', 'meth', 'cocaine', 'heroin', 'fentanyl', 'weed', 'cannabis', 'ecstasy', 'pills', 'vape', 
-    'smoke', 'marijuana', 'lsd', 'acid', 'shrooms', 'psilocybin', 'mdma', 'molly', 'opioid', 'narcotic', 
-    'dealer', 'stoned', 'high', 'tripping', 'syringe', 'crack', 'ketamine', 'roofies',
+    'smoke', 'marijuana', 'lsd', 'shrooms', 'psilocybin', 'mdma', 'molly', 'opioid', 'narcotic', 
+    'dealer', 'stoned', 'tripping', 'syringe', 'crack', 'ketamine', 'roofies',
 
     // --- VIOLENCE & GORE ---
     'kill', 'suicide', 'death', 'murder', 'blood', 'gore', 'deadly', 'cutting', 'self-harm', 'die', 
