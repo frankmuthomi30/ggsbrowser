@@ -129,8 +129,8 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     
-    recognition.continuous = false;
-    recognition.interimResults = false;
+    recognition.continuous = false; // Stop after one sentence
+    recognition.interimResults = true; // Show results while speaking
     recognition.lang = 'en-US';
 
     recognition.onstart = () => {
@@ -138,9 +138,19 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
     };
 
     recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
-      setUrl(transcript); // Set the URL bar text
-      handleNavigation(transcript, 'search'); // Auto-search
+      // Combine results
+      let transcript = '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        transcript += event.results[i][0].transcript;
+      }
+      
+      // Update valid state based on current view
+      if (!currentContent) {
+        setSearchQuery(transcript);
+      } else {
+        setUrl(transcript); 
+      }
+      // Note: Auto-navigation removed to prevent premature submission
     };
 
     recognition.onerror = (event: any) => {
