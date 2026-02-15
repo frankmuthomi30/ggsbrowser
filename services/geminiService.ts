@@ -59,25 +59,25 @@ const localFallbackCheck = (input: string): RiskAssessment | null => {
     'dealer', 'stoned', 'tripping', 'syringe', 'crack', 'ketamine', 'roofies',
 
     // --- VIOLENCE & GORE ---
-    'kill', 'suicide', 'death', 'murder', 'blood', 'gore', 'deadly', 'cutting', 'self-harm', 'die', 
-    'torture', 'execution', 'beheading', 'dismember', 'mutilat', 'stab', 'shoot', 'corpse', 'necro', 
+    'kill', 'suicide', 'death', 'murder', 'blood', 'gore', 'cutting', 'self-harm', 
+    'torture', 'execution', 'beheading', 'dismember', 'mutilat', 'stab', 'corpse', 'necro', 
     'snuff', 'massacre', 'genocide', 'assassinat',
 
     // --- SELF-HARM & EATING DISORDERS ---
     'thinspo', 'pro-ana', 'pro-mia', 'anorexia', 'bulimia', 'starve', 'purge', 'binge', 'bonespo', 
-    'cutting', 'razor', 'hang', 'overdose',
+    'cutting', 'razor', 'overdose',
 
     // --- WEAPONS & CRIME ---
-    'gun', 'rifle', 'pistol', 'bomb', 'weapon', 'assault', 'violence', 'shooting', 'ammunition', 
+    'gun', 'rifle', 'pistol', 'bomb', 'weapon', 'assault', 'violence', 'ammunition', 
     'knife', 'sword', 'explosive', 'grenade', 'terror', 'ar-15', 'glock', 'ammo', 'firearm', 
     'shoplift', 'steal', 'robbery', 'illegal',
 
     // --- GAMBLING & SCAMS ---
     'gambling', 'casino', 'betting', 'poker', 'slots', 'jackpot', 'lottery', 'roulette', 'blackjack', 
-    'scam', 'fraud', 'bank', 'credit card',
+    'scam', 'fraud', 'credit card',
 
     // --- MALICIOUS & DARK WEB ---
-    'hack', 'exploit', 'malware', 'phishing', 'darkweb', 'tor', 'onion', 'proxy', 'vpn', 'bypass', 
+    'hack', 'exploit', 'malware', 'phishing', 'darkweb', 'tor', 'onion', 'proxy', 'vpn', 
     'virus', 'trojan', 'spyware', 'ransomware', 'keylogger',
 
     // --- HATE SPEECH & EXTREMISM ---
