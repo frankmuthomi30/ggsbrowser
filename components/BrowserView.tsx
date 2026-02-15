@@ -13,6 +13,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
   const [showSplash, setShowSplash] = useState(true);
   const [url, setUrl] = useState('https://www.google.com');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isListening, setIsListening] = useState(false); // Voice Search State
   
   useEffect(() => {
     const timer = setTimeout(() => setShowSplash(false), 4500); 
@@ -117,6 +118,41 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
         if (type === 'visit') setUrl(input.startsWith('http') ? input : `https://${input}`);
       }
     }, 2500);
+  };
+
+  const startListening = () => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert("Voice search is not supported in this browser.");
+      return;
+    }
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setUrl(transcript); // Set the URL bar text
+      handleNavigation(transcript, 'search'); // Auto-search
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.start();
   };
 
   const cycleTheme = () => {
@@ -325,6 +361,16 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                 onKeyDown={(e) => e.key === 'Enter' && handleNavigation(url, 'visit')}
                 className={`bg-transparent border-none focus:ring-0 text-xs sm:text-sm w-full font-medium truncate ${isDarkMode ? 'text-white' : 'text-slate-800'}`}
              />
+             <button 
+               onClick={startListening}
+               className={`p-1.5 rounded-full transition-all flex-shrink-0 ${
+                 isListening 
+                   ? 'bg-red-500 text-white animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.6)]' 
+                   : 'text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10'
+               }`}
+             >
+               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+             </button>
           </div>
         </div>
 
