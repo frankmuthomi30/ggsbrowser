@@ -535,14 +535,26 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleNavigation(searchQuery, 'search')}
-                      className={`w-full pl-8 pr-20 py-5 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl text-white placeholder-white/50 focus:bg-white/20 focus:outline-none transition-all text-lg shadow-2xl font-medium tracking-wide`}
+                      className={`w-full pl-8 pr-32 py-5 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl text-white placeholder-white/50 focus:bg-white/20 focus:outline-none transition-all text-lg shadow-2xl font-medium tracking-wide`}
                     />
-                    <button 
-                      onClick={() => handleNavigation(searchQuery, 'search')}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 p-3 bg-white text-pink-600 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all duration-300"
-                    >
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    </button>
+                    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                      <button 
+                        onClick={startListening}
+                        className={`p-3 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 ${
+                          isListening 
+                            ? 'bg-red-500 text-white animate-pulse shadow-[0_0_20px_rgba(239,68,68,0.6)]' 
+                            : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-md'
+                        }`}
+                      >
+                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                      </button>
+                      <button 
+                        onClick={() => handleNavigation(searchQuery, 'search')}
+                        className="p-3 bg-white text-pink-600 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all duration-300"
+                      >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                      </button>
+                    </div>
                   </div>
               </div>
 
