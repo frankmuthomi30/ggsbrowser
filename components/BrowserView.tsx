@@ -568,32 +568,26 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                           <h3 className={`text-lg font-bold mb-2 ${isDarkMode ? 'text-slate-100' : 'text-slate-800'}`}>Concept Breakdown</h3>
                           <div className={`leading-relaxed font-medium relative z-10 space-y-2 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
                              {(() => {
-                                const rawText = currentAssessment.guideSummary.replace(/^.*(: The Simple Version|: Smart Summary)\s*/, '');
-                                if (rawText.includes('1. ')) {
-                                    // Detect numbered list and format
-                                    return rawText.split(/(\d+\.\s+)/).filter(Boolean).reduce((acc: any[], part, idx, arr) => {
-                                        if (/^\d+\.\s+/.test(part)) {
-                                            // Combine number with next text block
-                                            if (arr[idx+1]) {
-                                               acc.push(
-                                                  <div key={idx} className="flex gap-3 text-sm md:text-base items-start">
-                                                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-pink-100 text-pink-600 font-bold flex items-center justify-center text-xs mt-0.5 border border-pink-200">{part.trim().replace('.','')}</span>
-                                                     <span>{arr[idx+1]}</span>
-                                                  </div>
-                                               );
-                                            }
-                                        } else if (idx === 0 && !/^\d+\.\s+/.test(arr[0])) {
-                                            // Introduction text before list
-                                            acc.push(<p key={idx} className="mb-2">{part}</p>);
-                                        }
-                                        return acc;
-                                    }, []);
-                                } else {
-                                    // Regular Paragraphs
-                                    return rawText.split('\n').filter(p => p.trim()).map((p, i) => (
-                                        <p key={i} className="mb-2">{p}</p>
-                                    ));
-                                }
+                               const content = currentAssessment.guideSummary.replace(/^.*(: The Simple Version|: Smart Summary)\s*/, '');
+                               const lines = content.split('\n');
+                               return lines.map((line, i) => {
+                                 const trimmed = line.trim();
+                                 if (!trimmed) return null;
+                                 
+                                 // Check for various list indicators
+                                 if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
+                                   return (
+                                     <div key={i} className="flex gap-2 ml-2">
+                                       <span className="text-pink-500 font-bold">•</span>
+                                       <span>{trimmed.substring(2)}</span>
+                                     </div>
+                                   );
+                                 } else if (trimmed.match(/^\d+\./)) {
+                                   return <div key={i} className="font-bold text-pink-600 mt-2">{trimmed}</div>;
+                                 } else {
+                                   return <p key={i}>{trimmed}</p>;
+                                 }
+                               });
                              })()}
                           </div>
                       </div>
@@ -635,9 +629,12 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                                </span>
                             )}
                          </div>
-                         <a href={result.url} target="_blank" rel="noopener noreferrer" className={`text-xl font-bold cursor-pointer transition-colors mb-2 block ${isDarkMode ? 'text-[#8ab4f8] hover:text-[#a8c7fa] hover:underline' : 'text-[#1a0dab] hover:text-[#1e13bd] hover:underline'}`}>
+                         <button 
+                            onClick={() => handleNavigation(result.title, 'search')}
+                            className={`text-xl font-bold cursor-pointer transition-colors mb-2 block text-left w-full hover:underline ${isDarkMode ? 'text-[#8ab4f8] hover:text-[#a8c7fa]' : 'text-[#1a0dab] hover:text-[#1e13bd]'}`}
+                         >
                            {result.title}
-                         </a>
+                         </button>
                          
                          {/* Enhanced Snippet (Vast Info) */}
                          <p className={`text-sm leading-7 max-w-3xl font-medium ${isDarkMode ? 'text-[#bdc1c6]' : 'text-slate-600'}`}>
@@ -655,13 +652,13 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                             </div>
                          )}
 
-                         {/* Sub-Links (Clickable Expansion using Miest Search) */}
+                         {/* Sub-Links (Clickable Expansion) */}
                          {result.subLinks && result.subLinks.length > 0 && (
                             <div className="mt-4 flex flex-wrap gap-2">
                                {result.subLinks.map((sub, s) => (
                                   <button 
                                      key={s} 
-                                     onClick={() => handleNavigation(`${sub.title} related to ${currentContent}`, 'search')}
+                                     onClick={() => handleNavigation(sub.title, 'search')}
                                      className={`text-xs px-3 py-1 rounded-full border transition-colors flex items-center gap-1 ${isDarkMode ? 'border-white/10 bg-white/5 hover:bg-white/10 text-slate-300' : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600'}`}
                                   >
                                      <span className="opacity-50">↳</span> {sub.title}
