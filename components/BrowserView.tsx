@@ -561,11 +561,13 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                           </div>
                           <div className="flex items-center gap-2 mb-2">
                              <span className="text-xl">✨</span>
-                             <span className="text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">Miest Guide • Explain Like I'm...</span>
+                             <span className={`text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+                                {currentAssessment?.sophistication === 'ACADEMIC' ? "Miest Guide • Executive Summary" : "Miest Guide • The Simple Version"}
+                             </span>
                           </div>
-                          <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">{currentContent}: The Simple Version</h3>
-                          <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-medium relative z-10">
-                             {currentAssessment.guideSummary}
+                          <h3 className={`text-lg font-bold mb-2 ${isDarkMode ? 'text-slate-100' : 'text-slate-800'}`}>Concept Breakdown</h3>
+                          <p className={`leading-relaxed font-medium relative z-10 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                             {currentAssessment.guideSummary.replace(/^.*(: The Simple Version|: Smart Summary)\s*/, '')}
                           </p>
                       </div>
                    )}
@@ -594,10 +596,17 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                         ]
                    ).map((result, i) => (
                       <div key={i} className="group pl-4 mb-10">
-                         <div className="flex flex-col gap-0.5 mb-1">
+                         <div className="flex items-center gap-2 mb-1 flex-wrap">
                             <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono tracking-wider truncate uppercase">
                                {result.url} › {result.source}
                             </span>
+                            {(result.url.includes('.edu') || result.url.includes('.org') || result.url.includes('.gov')) && (
+                               <span className={`px-1.5 py-0.5 rounded text-[8px] font-black tracking-widest uppercase border ${
+                                 isDarkMode ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                               }`}>
+                                 Verified Source
+                               </span>
+                            )}
                          </div>
                          <a href={result.url} target="_blank" rel="noopener noreferrer" className={`text-xl font-bold cursor-pointer transition-colors mb-2 block ${isDarkMode ? 'text-[#8ab4f8] hover:text-[#a8c7fa] hover:underline' : 'text-[#1a0dab] hover:text-[#1e13bd] hover:underline'}`}>
                            {result.title}
