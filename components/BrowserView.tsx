@@ -117,7 +117,7 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
         setCurrentAssessment(assessment);
         if (type === 'visit') setUrl(input.startsWith('http') ? input : `https://${input}`);
       }
-    }, 2500);
+    }, 1200);
   };
 
   const startListening = () => {
