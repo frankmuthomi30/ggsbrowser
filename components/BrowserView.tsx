@@ -184,6 +184,71 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
   return (
     <div className={`h-full flex flex-col overflow-hidden relative transition-all duration-300 ${isDarkMode ? 'bg-[#121212]' : 'bg-white'}`}>
       
+      {/* ----------------- GLOBAL STYLES & ANIMATIONS ----------------- */}
+      <style>{`
+        @keyframes gradient-xy {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .animate-gradient-xy { 
+            background-size: 400% 400%;
+            animation: gradient-xy 15s ease infinite; 
+        }
+
+        @keyframes beam-slow {
+            0% { transform: translateY(-100%) rotate(12deg); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(100%) rotate(12deg); opacity: 0; }
+        }
+        .animate-beam-slow { animation: beam-slow 8s linear infinite; }
+        
+        @keyframes beam-slower {
+            0% { transform: translateY(-100%) rotate(-12deg); opacity: 0; }
+            50% { opacity: 0.3; }
+            100% { transform: translateY(100%) rotate(-12deg); opacity: 0; }
+        }
+        .animate-beam-slower { animation: beam-slower 12s linear infinite; }
+
+        @keyframes scale-in {
+            0% { transform: scale(0.8); opacity: 0; filter: blur(10px); }
+            100% { transform: scale(1); opacity: 1; filter: blur(0); }
+        }
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        .animate-pulse-slow { animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        
+        @keyframes tilt {
+            0%, 50%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(0.5deg); }
+            75% { transform: rotate(-0.5deg); }
+        }
+        .animate-tilt { animation: tilt 10s infinite linear; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fadeInUp 1s ease-out forwards; }
+        
+        .delay-1000 { animation-delay: 1000ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        /* Voice Waveform Animation */
+        @keyframes musicBar {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+        .animate-music-bar { animation: musicBar 1s ease-in-out infinite; }
+      `}</style>
+      
       {/* ----------------- SPLASH SCREEN ANIMATION ----------------- */}
       {showSplash && (
         <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#000] overflow-hidden font-sans w-screen h-screen">
@@ -327,11 +392,6 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
             .delay-1000 { animation-delay: 1000ms; }
             .delay-200 { animation-delay: 200ms; }
             .delay-300 { animation-delay: 300ms; }
-            .animate-music-bar { animation: musicBar 1s ease-in-out infinite; }
-            @keyframes musicBar {
-               0%, 100% { height: 4px; }
-               50% { height: 16px; }
-            }
           `}</style>
         </div>
       )}
@@ -562,11 +622,11 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                     {/* Voice Waveform Animation Overlay */}
                     {isListening && (
                        <div className="absolute inset-x-0 bottom-0 h-1 flex items-end justify-center gap-1 pb-4 pointer-events-none opacity-50">
-                          <div className="w-1 bg-white animate-[music-bar_0.5s_ease-in-out_infinite]"></div>
-                          <div className="w-1 bg-white animate-[music-bar_0.7s_ease-in-out_infinite]"></div>
-                          <div className="w-1 bg-white animate-[music-bar_0.4s_ease-in-out_infinite]"></div>
-                          <div className="w-1 bg-white animate-[music-bar_0.6s_ease-in-out_infinite]"></div>
-                          <div className="w-1 bg-white animate-[music-bar_0.5s_ease-in-out_infinite]"></div>
+                          <div className="w-1 bg-white" style={{ animation: 'musicBar 0.5s ease-in-out infinite' }}></div>
+                          <div className="w-1 bg-white" style={{ animation: 'musicBar 0.7s ease-in-out infinite' }}></div>
+                          <div className="w-1 bg-white" style={{ animation: 'musicBar 0.4s ease-in-out infinite' }}></div>
+                          <div className="w-1 bg-white" style={{ animation: 'musicBar 0.6s ease-in-out infinite' }}></div>
+                          <div className="w-1 bg-white" style={{ animation: 'musicBar 0.5s ease-in-out infinite' }}></div>
                        </div>
                     )}
 
