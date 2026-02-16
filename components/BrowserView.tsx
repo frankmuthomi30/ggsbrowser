@@ -621,39 +621,84 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                 {/* Main Results Column */}
                 <div className="space-y-10 max-w-3xl">
                    
-                   {/* GATURA GUIDE: Simplified Summary for Complex/Sensitive Topics */}
+                   {/* GATURA GUIDE: AI Overview Style */}
                    {currentAssessment?.guideSummary && (
-                      <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-800 shadow-xl relative overflow-hidden">
-                          <div className="absolute top-0 right-0 p-4 opacity-10">
-                            <svg className="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                      <div className={`mb-8 p-6 rounded-2xl relative overflow-hidden transition-colors border shadow-lg ${isDarkMode ? 'bg-[#1a1a1a] border-white/10' : 'bg-white border-slate-200'}`}>
+                          
+                          {/* AI Branding Header */}
+                          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-dashed border-gray-200 dark:border-gray-800">
+                             <div className="p-2 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg shadow-inner">
+                                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                             </div>
+                             <div>
+                                <h3 className={`font-bold text-sm uppercase tracking-wider ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                                   AI Overview
+                                </h3>
+                                <p className="text-[10px] uppercase tracking-widest opacity-60 font-semibold">Generative Analysis</p>
+                             </div>
                           </div>
-                          <div className="flex items-center gap-2 mb-2">
-                             <span className="text-xl">✨</span>
-                             <span className={`text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-                                {currentAssessment?.sophistication === 'ACADEMIC' ? "Miest Guide • Executive Summary" : "Miest Guide • The Simple Version"}
-                             </span>
-                          </div>
-                          <h3 className={`text-lg font-bold mb-2 ${isDarkMode ? 'text-slate-100' : 'text-slate-800'}`}>Concept Breakdown</h3>
-                          <div className={`leading-relaxed font-medium relative z-10 space-y-2 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+
+                          {/* Content Body */}
+                          <div className={`leading-relaxed text-sm md:text-base space-y-4 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
                              {(() => {
-                               const content = currentAssessment.guideSummary.replace(/^.*(: The Simple Version|: Smart Summary)\s*/, '');
+                               const content = currentAssessment.guideSummary;
                                const lines = content.split('\n');
                                return lines.map((line, i) => {
                                  const trimmed = line.trim();
                                  if (!trimmed) return null;
                                  
-                                 // Check for various list indicators
-                                 if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
+                                 // Check for Bold Headers (e.g., "**Essential Steps**")
+                                 if (trimmed.startsWith('**') && trimmed.endsWith('**') && trimmed.length < 50) {
                                    return (
-                                     <div key={i} className="flex gap-2 ml-2">
-                                       <span className="text-pink-500 font-bold">•</span>
-                                       <span>{trimmed.substring(2)}</span>
+                                     <h4 key={i} className={`font-bold text-lg mt-6 mb-2 ${isDarkMode ? 'text-pink-400' : 'text-purple-700'}`}>
+                                       {trimmed.replace(/\*\*/g, '')}
+                                     </h4>
+                                   );
+                                 } 
+                                 // Check for Header with Number (e.g., "1. Health")
+                                 else if (trimmed.match(/^\d+\.\s+\*\*/)) {
+                                    return (
+                                      <h4 key={i} className={`font-bold text-lg mt-6 mb-2 ${isDarkMode ? 'text-pink-400' : 'text-purple-700'}`}>
+                                        {trimmed.replace(/\*\*/g, '')}
+                                      </h4>
+                                    );
+                                 }
+                                 // Check for Bullet Points (e.g., "- **Point:** text")
+                                 else if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
+                                   const text = trimmed.substring(2);
+                                   const hasBold = text.includes('**');
+                                   
+                                   if (hasBold) {
+                                      const parts = text.split('**');
+                                      return (
+                                        <div key={i} className="flex gap-3 ml-1 mb-2">
+                                          <span className="text-pink-500 mt-1.5">•</span>
+                                          <span>
+                                            {parts.map((part, idx) => (idx % 2 === 1 ? <strong key={idx} className={isDarkMode ? 'text-white' : 'text-slate-900'}>{part}</strong> : part))}
+                                          </span>
+                                        </div>
+                                      );
+                                   }
+                                   return (
+                                     <div key={i} className="flex gap-3 ml-1 mb-2">
+                                       <span className="text-pink-500 mt-1.5">•</span>
+                                       <span>{text}</span>
                                      </div>
                                    );
-                                 } else if (trimmed.match(/^\d+\./)) {
-                                   return <div key={i} className="font-bold text-pink-600 mt-2">{trimmed}</div>;
-                                 } else {
-                                   return <p key={i}>{trimmed}</p>;
+                                 } 
+                                 // Check for Citations/Sources
+                                 else if (trimmed.includes('[Source:') || trimmed.startsWith('Source:')) {
+                                   return (
+                                      <div key={i} className="mt-2 mb-4">
+                                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'bg-white/10 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>
+                                            {trimmed.replace(/\[|\]/g, '')}
+                                         </span>
+                                      </div>
+                                   );
+                                 }
+                                 // Standard Paragraph
+                                 else {
+                                   return <p key={i} className={i === 0 ? "font-medium text-lg mb-4" : "mb-2 opacity-90"}>{trimmed}</p>;
                                  }
                                });
                              })()}
