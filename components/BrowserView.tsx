@@ -327,6 +327,11 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
             .delay-1000 { animation-delay: 1000ms; }
             .delay-200 { animation-delay: 200ms; }
             .delay-300 { animation-delay: 300ms; }
+            .animate-music-bar { animation: musicBar 1s ease-in-out infinite; }
+            @keyframes musicBar {
+               0%, 100% { height: 4px; }
+               50% { height: 16px; }
+            }
           `}</style>
         </div>
       )}
@@ -537,32 +542,57 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
               
               {/* SEARCH: The Portal */}
               <div className="w-full max-w-2xl relative mb-16 z-20 group animate-fade-in-up delay-200">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-full blur opacity-30 group-hover:opacity-60 transition duration-700 group-hover:duration-200"></div>
-                  <div className="relative flex items-center">
-                    <input 
-                      type="text" 
-                      placeholder="Where do you want to go safely?" 
+                  <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-700 group-hover:duration-200"></div>
+                  <div className="relative flex items-start">
+                    <textarea 
+                      placeholder="Start talking or typing..." 
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && handleNavigation(searchQuery, 'search')}
-                      className={`w-full pl-8 pr-32 py-5 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl text-white placeholder-white/50 focus:bg-white/20 focus:outline-none transition-all text-lg shadow-2xl font-medium tracking-wide`}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          handleNavigation(searchQuery, 'search');
+                        }
+                      }}
+                      rows={isListening || searchQuery.length > 50 ? 3 : 1}
+                      className={`w-full pl-6 pr-32 py-4 rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl text-white placeholder-white/50 focus:bg-white/20 focus:outline-none transition-all duration-300 text-lg shadow-2xl font-medium tracking-wide resize-none overflow-hidden scrollbar-hide`}
+                      style={{ minHeight: '60px' }}
                     />
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                    
+                    {/* Voice Waveform Animation Overlay */}
+                    {isListening && (
+                       <div className="absolute inset-x-0 bottom-0 h-1 flex items-end justify-center gap-1 pb-4 pointer-events-none opacity-50">
+                          <div className="w-1 bg-white animate-[music-bar_0.5s_ease-in-out_infinite]"></div>
+                          <div className="w-1 bg-white animate-[music-bar_0.7s_ease-in-out_infinite]"></div>
+                          <div className="w-1 bg-white animate-[music-bar_0.4s_ease-in-out_infinite]"></div>
+                          <div className="w-1 bg-white animate-[music-bar_0.6s_ease-in-out_infinite]"></div>
+                          <div className="w-1 bg-white animate-[music-bar_0.5s_ease-in-out_infinite]"></div>
+                       </div>
+                    )}
+
+                    <div className="absolute right-2 top-2 flex items-center gap-2">
                       <button 
                         onClick={startListening}
-                        className={`p-3 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 ${
+                        className={`p-3 rounded-full shadow-lg transition-all duration-300 relative overflow-hidden group/mic ${
                           isListening 
-                            ? 'bg-red-500 text-white animate-pulse shadow-[0_0_20px_rgba(239,68,68,0.6)]' 
+                            ? 'bg-red-500 text-white scale-110 ring-4 ring-red-500/30' 
                             : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-md'
                         }`}
                       >
-                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                         {/* Pulse Rings for Listening Mode */}
+                         {isListening && (
+                           <>
+                             <span className="absolute inset-0 rounded-full border-2 border-white animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite]"></span>
+                             <span className="absolute inset-0 rounded-full border border-white animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite] delay-150"></span>
+                           </>
+                         )}
+                         <svg className={`w-5 h-5 relative z-10 transition-transform ${isListening ? 'scale-110' : 'group-hover/mic:scale-110'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
                       </button>
                       <button 
                         onClick={() => handleNavigation(searchQuery, 'search')}
-                        className="p-3 bg-white text-pink-600 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all duration-300"
+                        className="p-3 bg-white text-pink-600 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 transform"
                       >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                       </button>
                     </div>
                   </div>
