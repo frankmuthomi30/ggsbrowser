@@ -47,8 +47,8 @@ Your tasks:
 const localFallbackCheck = (input: string): RiskAssessment | null => {
   const forbidden = [
     // --- ADULT & EXPLICIT CONTENT ---
-    'porn', 'sex', 'xxx', 'naked', 'nudity', 'nsfw', 'adult', 'escort', 'hookup', 'onlyfans', 'sexy', 
-    'brazzers', 'xhamster', 'pornhub', ' hentai', 'erotic', 'incest', 'masturbat', 'orgasm', 'penis', 
+    'porn', 'pornography', 'pornographic', 'sex', 'sexual', 'xxx', 'naked', 'nudity', 'nsfw', 'adult', 'escort', 'hookup', 'onlyfans', 'sexy', 
+    'brazzers', 'xhamster', 'pornhub', ' hentai', 'erotic', 'erotica', 'incest', 'masturbat', 'orgasm', 'penis', 
     'vagina', 'dick', 'cock', 'pussy', 'boobs', 'tits', 'anal', 'oral', 'bdsm', 'fetish', 'kink', 
     'camgirl', 'strip', 'nude', 'seduce', 'fuck', 'shit', 'bitch', 'whore', 'slut', 'milf', 'dilf', 
     'chaturbate', 'omegle', 'redtube', 'youporn', 'xvideos', 'rule34',
