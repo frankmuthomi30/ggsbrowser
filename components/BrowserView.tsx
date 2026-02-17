@@ -711,88 +711,106 @@ const BrowserView: React.FC<BrowserViewProps> = ({ onActivity, theme, onUpdateTh
                 {/* Main Results Column */}
                 <div className="space-y-10 max-w-3xl">
                    
-                   {/* GATURA GUIDE: AI Overview Style */}
+                   {/* GATURA GUIDE: AI Overview Style - Restored Vivid Design */}
                    {currentAssessment?.guideSummary && (
-                      <div className={`mb-8 p-6 rounded-2xl relative overflow-hidden transition-colors border shadow-lg ${isDarkMode ? 'bg-[#1a1a1a] border-white/10' : 'bg-white border-slate-200'}`}>
+                      <div className={`mb-10 p-1 rounded-3xl bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 shadow-2xl`}>
+                        <div className={`p-8 rounded-[1.4rem] relative overflow-hidden h-full ${isDarkMode ? 'bg-[#0f0f10]' : 'bg-white'}`}>
                           
+                          {/* Background Glow Effect */}
+                          <div className={`absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full blur-3xl pointer-events-none -mr-24 -mt-24`}></div>
+                          <div className={`absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-cyan-500/10 to-transparent rounded-full blur-3xl pointer-events-none -ml-20 -mb-20`}></div>
+
                           {/* AI Branding Header */}
-                          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-dashed border-gray-200 dark:border-gray-800">
-                             <div className="p-2 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg shadow-inner">
-                                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                          <div className="relative z-10 flex items-center gap-5 mb-8 pb-6 border-b border-dashed border-gray-200 dark:border-gray-800/50">
+                             <div className="relative group">
+                                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-cyan-500 rounded-xl blur opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                                <div className={`relative p-3 rounded-xl shadow-inner flex items-center justify-center ${isDarkMode ? 'bg-gray-900 border border-gray-700' : 'bg-white border border-gray-100'}`}>
+                                   <svg className="w-8 h-8 text-pink-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> 
+                                </div>
                              </div>
                              <div>
-                                <h3 className={`font-bold text-sm uppercase tracking-wider ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                                   AI Overview
+                                <h3 className="text-2xl font-black uppercase tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500">
+                                   AI Executive Summary
                                 </h3>
-                                <p className="text-[10px] uppercase tracking-widest opacity-60 font-semibold">Generative Analysis</p>
+                                <p className={`text-xs font-bold uppercase tracking-[0.25em] ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+                                   Powered by Miest Safe Guard
+                                </p>
                              </div>
                           </div>
 
                           {/* Content Body */}
-                          <div className={`leading-relaxed text-sm md:text-base space-y-4 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                          <div className={`relative z-10 leading-relaxed text-sm md:text-base space-y-5 ${isDarkMode ? 'text-slate-300' : 'text-slate-600 font-medium'}`}>
                              {(() => {
-                               const content = currentAssessment.guideSummary;
-                               const lines = content.split('\n');
+                               // Pre-process content to ensure structure even if AI misses newlines
+                               const rawContent = currentAssessment.guideSummary || "";
+                               const formattedContent = rawContent
+                                 .replace(/(\*\*[^*]+\*\*)/g, '\n\n$1\n') // Force newlines around headers
+                                 .replace(/(\- \*\*)/g, '\n- **')        // Force newlines before bullets
+                                 .replace(/(\• \*\*)/g, '\n• **');       // Handle alternative bullet style
+
+                               const lines = formattedContent.split('\n');
+                               
                                return lines.map((line, i) => {
                                  const trimmed = line.trim();
                                  if (!trimmed) return null;
                                  
                                  // Check for Bold Headers (e.g., "**Essential Steps**")
-                                 if (trimmed.startsWith('**') && trimmed.endsWith('**') && trimmed.length < 50) {
+                                 if ((trimmed.startsWith('**') && trimmed.endsWith('**') && trimmed.length < 60) || trimmed.match(/^\d+\.\s+\*\*/)) {
                                    return (
-                                     <h4 key={i} className={`font-bold text-lg mt-6 mb-2 ${isDarkMode ? 'text-pink-400' : 'text-purple-700'}`}>
-                                       {trimmed.replace(/\*\*/g, '')}
+                                     <h4 key={i} className={`font-black text-lg mt-8 mb-3 uppercase tracking-wide flex items-center gap-3 ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
+                                       <span className="w-1.5 h-6 bg-gradient-to-b from-pink-500 to-cyan-500 rounded-full"></span>
+                                       {trimmed.replace(/\*\*|^\d+\.\s+/g, '')}
                                      </h4>
                                    );
                                  } 
-                                 // Check for Header with Number (e.g., "1. Health")
-                                 else if (trimmed.match(/^\d+\.\s+\*\*/)) {
-                                    return (
-                                      <h4 key={i} className={`font-bold text-lg mt-6 mb-2 ${isDarkMode ? 'text-pink-400' : 'text-purple-700'}`}>
-                                        {trimmed.replace(/\*\*/g, '')}
-                                      </h4>
-                                    );
-                                 }
                                  // Check for Bullet Points (e.g., "- **Point:** text")
                                  else if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
                                    const text = trimmed.substring(2);
                                    const hasBold = text.includes('**');
                                    
+                                   const bulletIcon = (
+                                     <span className="flex-shrink-0 mt-1">
+                                        <svg className="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                     </span>
+                                   );
+
                                    if (hasBold) {
                                       const parts = text.split('**');
                                       return (
-                                        <div key={i} className="flex gap-3 ml-1 mb-2">
-                                          <span className="text-pink-500 mt-1.5">•</span>
-                                          <span>
-                                            {parts.map((part, idx) => (idx % 2 === 1 ? <strong key={idx} className={isDarkMode ? 'text-white' : 'text-slate-900'}>{part}</strong> : part))}
+                                        <div key={i} className={`flex gap-3 ml-1 mb-3 p-3 rounded-xl transition-colors items-start ${isDarkMode ? 'hover:bg-white/5' : 'hover:bg-slate-50'}`}>
+                                          {bulletIcon}
+                                          <span className="leading-relaxed">
+                                            {parts.map((part, idx) => (idx % 2 === 1 ? <strong key={idx} className={`${isDarkMode ? 'text-pink-300' : 'text-purple-700'} font-bold`}>{part}</strong> : part))}
                                           </span>
                                         </div>
                                       );
                                    }
                                    return (
-                                     <div key={i} className="flex gap-3 ml-1 mb-2">
-                                       <span className="text-pink-500 mt-1.5">•</span>
-                                       <span>{text}</span>
+                                     <div key={i} className={`flex gap-3 ml-1 mb-2 p-2 rounded-lg items-start ${isDarkMode ? 'hover:bg-white/5' : 'hover:bg-slate-50'}`}>
+                                       {bulletIcon}
+                                       <span className="leading-relaxed">{text}</span>
                                      </div>
                                    );
                                  } 
                                  // Check for Citations/Sources
-                                 else if (trimmed.includes('[Source:') || trimmed.startsWith('Source:')) {
+                                 else if (trimmed.toLowerCase().includes('source:')) {
                                    return (
-                                      <div key={i} className="mt-2 mb-4">
-                                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'bg-white/10 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>
-                                            {trimmed.replace(/\[|\]/g, '')}
+                                      <div key={i} className="mt-2 mb-4 pl-2">
+                                         <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${isDarkMode ? 'bg-slate-800/50 text-slate-400 border-slate-700' : 'bg-slate-100 text-slate-500 border-slate-200'}`}>
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                                            {trimmed.replace(/\[|\]/g, '').replace(/Source:|source:/i, '').trim()}
                                          </span>
                                       </div>
                                    );
                                  }
                                  // Standard Paragraph
                                  else {
-                                   return <p key={i} className={i === 0 ? "font-medium text-lg mb-4" : "mb-2 opacity-90"}>{trimmed}</p>;
+                                   return <p key={i} className={i === 0 ? `font-medium text-xl mb-6 leading-8 ${isDarkMode ? 'text-slate-200' : 'text-slate-800'}` : "mb-4 opacity-90 leading-7"}>{trimmed}</p>;
                                  }
                                });
                              })()}
                           </div>
+                        </div>
                       </div>
                    )}
 
